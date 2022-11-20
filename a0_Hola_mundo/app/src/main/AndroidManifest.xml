@@ -6,9 +6,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/emoji_people_48px_1_"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/emoji_people_48px_1_"
         android:supportsRtl="true"
         android:theme="@style/Theme.A0_Hola_mundo"
         tools:targetApi="31">
