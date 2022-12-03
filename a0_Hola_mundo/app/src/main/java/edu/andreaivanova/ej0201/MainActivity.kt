@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity() {
         btnSaludar.setOnClickListener { btn ->
             // si no se inserta el texto
             if (etSaludo.text.isBlank()) {
-                etSaludo.error = resources.getString(R.string.texto_error)
-                //crea un toast con el texto de error indicado
+                etSaludo.error = resources.getString(R.string.texto_error) //este es el mensaje al lado del campo
+                //crea un toast con el texto de error indicado esto es el mensaje abajo
                 Toast.makeText(this, R.string.texto_error, Toast.LENGTH_SHORT).show()
                 btn.setBackgroundColor(Color.RED)
             } else {

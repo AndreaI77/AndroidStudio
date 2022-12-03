@@ -5,4 +5,6 @@
     <string name="rd_hombre">Hombre</string>
     <string name="rd_mujer">Mujer</string>
     <string name="chb_carnet">Carnet de conducir</string>
+    <string name="txt_spinner">Indica tu mes de nacimiento</string>
+    <string name="btn_info">Ver datos</string>
 </resources>
