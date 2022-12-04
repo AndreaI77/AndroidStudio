@@ -10,22 +10,15 @@ import edu.andreaivanova.ej0402.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    var datos = arrayOf("uno","dos")
+
+    //val datos = resources.getStringArray(R.array.pelis) //esto no compila
+    private val datos = arrayOf("Avatar","Origin", "Passengers")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
-       /* with(binding){
-            button.setOnClickListener{
-
-            }
-        }*/
-        val adaptador = ArrayAdapter(
-            this,
-            R.layout.listview_item,
-            datos
-        )
+        val adaptador = ArrayAdapter(this, R.layout.listview_item, datos)
         binding.miLista.adapter= adaptador
         binding.miLista.onItemClickListener = object: AdapterView.OnItemClickListener{
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
