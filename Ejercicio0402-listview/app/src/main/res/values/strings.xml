@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Mis películas</string>
+    <string-array name="pelis">
+        <item>Avatar</item>
+        <item>I am legend</item>
+        <item>Predestination</item>
+        <item>Origin</item>
+        <item>Men in black</item>
+        <item>Repo men</item>
+        <item>La Purga</item>
+        <item>Passengers</item>
+        <item>Oblivion</item>
+        <item>Mama</item>
+    </string-array>
+</resources>
