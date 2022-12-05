@@ -29,13 +29,14 @@ class MainActivity : AppCompatActivity() {
         binding.misLibros.adapter = myAdapter
     }
     private fun getLibros(): MutableList<String>{
-        var libros: MutableList<String> = arrayListOf()
-        val datos = resources.getStringArray(R.array.libros)
 
-        for(item in datos){
+        val datos = resources.getStringArray(R.array.libros)
+        var libros: MutableList<String> = datos.toList() as MutableList<String>
+        //Toast.makeText(applicationContext, "${libros.size}", Toast.LENGTH_SHORT).show()
+       /* for(item in datos){
             libros.add(item)
             Toast.makeText(applicationContext, item, Toast.LENGTH_SHORT).show()
-        }
+        }*/
         return libros
     }
 }
