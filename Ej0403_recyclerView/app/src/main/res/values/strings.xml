@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Mis libros</string>
+    <string-array name="libros">
+        <item>Libro1</item>
+        <item>Libro2</item>
+        <item>Libro3</item>
+        <item>Libro4</item>
+        <item>Libro5</item>
+        <item>Libro6</item>
+    </string-array>
+</resources>

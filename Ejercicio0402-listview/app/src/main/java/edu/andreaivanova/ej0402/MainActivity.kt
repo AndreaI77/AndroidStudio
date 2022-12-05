@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         binding.miLista.adapter= adaptador
         binding.miLista.onItemClickListener = object: AdapterView.OnItemClickListener{
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+
                 Toast.makeText(
                     applicationContext,
                     "${binding.miLista.getItemAtPosition(p2)}",
