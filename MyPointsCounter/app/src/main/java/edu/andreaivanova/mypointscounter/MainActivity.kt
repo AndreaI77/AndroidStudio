@@ -3,7 +3,7 @@ package edu.andreaivanova.mypointscounter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import edu.andreaivanova.mypointscounter.databinding.ActivityMainBinding
-import edu.andreaivanova.mypointscounter.databinding.ActivityMainHorBinding
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#8A8787"
+    android:orientation="horizontal"
     app:guidelineUseRtl="false"
     tools:context=".MainActivity">
 
@@ -40,15 +41,13 @@
 
     <ImageView
         android:id="@+id/ivFondo"
-        android:layout_width="322dp"
-        android:layout_height="263dp"
-        android:layout_marginStart="20dp"
+        android:layout_width="258dp"
+        android:layout_height="208dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="124dp"
         android:contentDescription="@string/contador"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
@@ -57,10 +56,11 @@
 
     <Button
         android:id="@+id/btnSuma"
-        android:layout_width="140dp"
+        android:layout_width="150dp"
         android:layout_height="60dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="@color/suma"
         android:text="@string/txt_suma"
         android:textSize="20sp"
@@ -79,24 +79,24 @@
         android:layout_height="60dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="76dp"
         android:backgroundTint="@color/reset"
         android:text="@string/txt_reset"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/ivFondo"
+        app:layout_constraintTop_toBottomOf="@id/ivFondo"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btnResta"
-        android:layout_width="130dp"
+        android:layout_width="150dp"
         android:layout_height="60dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="@color/resta"
         android:text="@string/txt_resta"
         android:textSize="20sp"
@@ -129,15 +129,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginBottom="216dp"
-        android:gravity="center"
+        android:layout_marginBottom="168dp"
+        android:gravity="center|end"
         android:text="@string/txt_saved_info"
-        android:textAlignment="textEnd"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/ivFondo"
         app:layout_constraintEnd_toEndOf="@id/ibSave"
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toEndOf="@id/guideline" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
