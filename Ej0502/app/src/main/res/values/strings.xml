@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Ej0502</string>
+    <string name="nombre">Nombre</string>
+    <string name="ape1">Primer apellido</string>
+    <string name="ape2">Segundo apellido</string>
+    <string name="btn">Ver datos</string>
+
+</resources>

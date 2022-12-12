@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
             }else{
                 Toast.makeText( applicationContext,"Nombre: ${nombre.text}, Apellidos: ${apellidos.text},\nSexo: ${sexo}, ${carnet}, \nMes de nacimeinto: ${mes}", Toast.LENGTH_LONG).show()
                 //no me reconoce el binding
-                /*Snackbar.make(
+               /* Snackbar.make(
                    //binding.root,
 
                     "Nombre: ${nombre.text}, Apellidos: ${apellidos.text},\nSexo: ${sexo}, ${carnet}, \nMes de nacimeinto: ${mes}",
