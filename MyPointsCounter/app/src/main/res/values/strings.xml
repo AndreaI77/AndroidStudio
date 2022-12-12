@@ -8,4 +8,5 @@
     <string name="txt_info_reset">El contador ya está a <b>cero</b>.</string>
     <string name="contador">contador</string>
     <string name="save">guardar</string>
+    <string name="filename">MyPointsCounter.txt</string>
 </resources>

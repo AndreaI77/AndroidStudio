@@ -13,13 +13,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-            binding.btn1.setOnClickListener{
+            binding.btn1.setOnClickListener {
                 val miIntent = Intent(this, SegundaActivity::class.java)
                 startActivity(miIntent)
-
-
-        }
-
+            }
     }
 }
