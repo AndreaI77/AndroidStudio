@@ -6,5 +6,4 @@ class MainViewModel: ViewModel() {
     var id= 0
     var contador = 0
     var savedInfo = ""
-
 }

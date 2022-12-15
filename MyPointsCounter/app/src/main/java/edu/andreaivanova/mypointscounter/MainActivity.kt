@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
 
             //obtengo fecha y hora en el formato requerido y creo el objeto
             var fecha= SimpleDateFormat("dd/MM/yyyy").format(Date())
-            var hora = SimpleDateFormat("HH:mm:ss ").format(Date())
+            var hora = SimpleDateFormat("HH:mm:ss").format(Date())
             datos = MyPoints(id, points, fecha.toString(), hora.toString())
             id++
             //actualizo id en viewModel
