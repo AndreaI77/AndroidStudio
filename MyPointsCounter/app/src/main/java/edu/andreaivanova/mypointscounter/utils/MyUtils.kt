@@ -1,5 +1,6 @@
 package edu.andreaivanova.mypointscounter.utils
 
+import android.app.Activity
 import android.content.Context
 import android.content.Context.VIBRATOR_MANAGER_SERVICE
 import android.content.Context.VIBRATOR_SERVICE
@@ -10,25 +11,27 @@ import android.os.VibratorManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.getSystemService
 import edu.andreaivanova.mypointscounter.R
 import edu.andreaivanova.mypointscounter.model.MyPoints
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 
 
-class MyUtils() {
+class MyUtils {
     fun vibrate(context:Context){
-       var vibrator:Vibrator
+       val vibrator:Vibrator
+       //compruebo la versión, ya que a partir de la api 31 se usa vibratorManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val vibratorManager =
                 context.getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager
             vibrator = vibratorManager.defaultVibrator
         } else {
-            // backward compatibility for Android API < 31,
-            // VibratorManager was only added on API level 31 release.
 
             vibrator = context.getSystemService(VIBRATOR_SERVICE) as Vibrator
         }
+        //compruebo si el dispositivo tiene un vibrador y en caso afirmativo, lo hago vibrar
         if (!vibrator.hasVibrator()) {
             Toast.makeText(context, "No tienes vibrador!!", Toast.LENGTH_SHORT).show()
         } else {
@@ -44,10 +47,45 @@ class MyUtils() {
                  }
              }
     }
-    fun savePoints(context:Context, datos:MyPoints):Boolean{
+    fun savePoints(context: Context, datos: MyPoints): Boolean {
+        try {
+            // Si el fichero no existe se crea,
+            // si existe se añade la información
 
-        return true
+            val salida =OutputStreamWriter(
+                 context.openFileOutput(context.getString(R.string.filename), Activity.MODE_APPEND)
+            )
+            salida.write("${datos.points};${datos.date};${datos.hour};\n")
+            // Se confirma la escritura.
+            salida.flush()
+            salida.close()
+
+            //no encuentro el fichero ni en la aplicación, ni en teléfono, pero me devuelve los datos, así que debe existir en algún lugar.
+            /*try{
+                var texto=""
+                val entrada = InputStreamReader(
+                     context.openFileInput(context.getString(R.string.filename)))
+                 val br = BufferedReader(entrada)
+                 var linea = br.readLine()
+
+                 while (!linea.isNullOrEmpty()) {
+                    texto +=linea
+                     linea = br.readLine()
+                     }
+                    Toast.makeText(context, texto, Toast.LENGTH_LONG).show()
+                 br.close()
+                 entrada.close()
+             } catch (e: IOException) {
+                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+             }*/
+            return true
+        } catch (e: IOException)
+        {
+            return false
+        }
     }
+
+    //actualizo el marcador y cambio el color del texto, si procede
     fun updateMarcador(context:Context,marcador:TextView, contador:Int){
         marcador.text= contador.toString()
         if(contador <0){
