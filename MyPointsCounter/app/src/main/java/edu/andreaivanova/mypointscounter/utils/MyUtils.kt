@@ -10,7 +10,7 @@ import android.os.Vibrator
 import android.os.VibratorManager
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import edu.andreaivanova.mypointscounter.R
 import edu.andreaivanova.mypointscounter.model.MyPoints
 import java.io.BufferedReader
@@ -60,7 +60,6 @@ class MyUtils {
             salida.flush()
             salida.close()
 
-            //no encuentro el fichero ni en la aplicación, ni en teléfono, pero me devuelve los datos, así que debe existir en algún lugar.
             /*try{
                 var texto=""
                 val entrada = InputStreamReader(
@@ -88,10 +87,11 @@ class MyUtils {
     //actualizo el marcador y cambio el color del texto, si procede
     fun updateMarcador(context:Context,marcador:TextView, contador:Int){
         marcador.text= contador.toString()
+
         if(contador <0){
-            marcador.setTextColor(ContextCompat.getColor(context, R.color.reset))
+            marcador.setTextColor(getColor(context,R.color.reset))
         }else{
-            marcador.setTextColor(ContextCompat.getColor(context, R.color.black))
+            marcador.setTextColor(context.getColor(R.color.black))
         }
 
 

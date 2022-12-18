@@ -2,7 +2,6 @@ package edu.andreaivanova.mypointscounter
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
@@ -50,14 +49,15 @@ class MainActivity : AppCompatActivity() {
         //al hacer click en botón reset borro el texto de tvSaved
         binding.btnReset.setOnClickListener {
             binding.tvSaved.text=""
-            mainViewModel.savedInfo = binding.tvSaved.text.toString()
+            mainViewModel.updateInfo(binding.tvSaved.text.toString())
             if (contador == 0) {
                 //si el contador ya está a 0, aviso mediante snackbar
                 Snackbar.make(binding.root, getString(R.string.txt_info_reset), Snackbar.LENGTH_LONG).show()
             } else {
                 //pongo contador a 0, actualizo viewModel y el marcador y hago vibrar el dispositivo
                 contador = 0
-                mainViewModel.contador = contador
+                /*mainViewModel.contador = contador*/
+                mainViewModel.updateContador(contador)
                 myUtils.updateMarcador(this, binding.marcador, contador)
                 myUtils.vibrate(this)
             }
@@ -72,8 +72,9 @@ class MainActivity : AppCompatActivity() {
             myUtils.updateMarcador(this, binding.marcador, contador)
             // hago vibrar el dispositivo
             myUtils.vibrate(this)
-            mainViewModel.contador = contador
-            mainViewModel.savedInfo = binding.tvSaved.text.toString()
+
+            mainViewModel.updateContador(contador)
+            mainViewModel.updateInfo(binding.tvSaved.text.toString())
         }
         //en el botón suma ofrezco la posibilidad de guardar la puntuación,
         // sumo 1 punto al contador, actualizo el marcador y el viewModel
@@ -83,8 +84,9 @@ class MainActivity : AppCompatActivity() {
             myUtils.updateMarcador(this, binding.marcador, contador)
             // hago vibrar el dispositivo
             myUtils.vibrate(this)
-            mainViewModel.contador = contador
-            mainViewModel.savedInfo = binding.tvSaved.text.toString()
+
+            mainViewModel.updateContador(contador)
+            mainViewModel.updateInfo(binding.tvSaved.text.toString())
         }
 
         binding.ibSave.setOnClickListener {
@@ -101,7 +103,7 @@ class MainActivity : AppCompatActivity() {
             datos = MyPoints(id, points, fecha.toString(), hora.toString())
             id++
             //actualizo id en viewModel
-            mainViewModel.id= id
+            mainViewModel.updateId(id)
 
             //si la función de guardado me devuelve true, hago vibrar el dispositivo
 
@@ -110,12 +112,12 @@ class MainActivity : AppCompatActivity() {
 
                 //cambio el texto de tvSaved y actualizo el viewModel
                 binding.tvSaved.text = getString(R.string.txt_saved_info,("$fecha - $hora"))
-                mainViewModel.savedInfo = binding.tvSaved.text.toString()
+                mainViewModel.updateInfo (binding.tvSaved.text.toString())
 
             }else{
                 //si el guardado devuelve false, cambio el texto de tvSaved y actualizo el viewModel
-                binding.tvSaved.text="No se ha guardado la puntuación"
-                mainViewModel.savedInfo = binding.tvSaved.text.toString()
+                binding.tvSaved.text=resources.getString(R.string.error)
+                mainViewModel.updateInfo(binding.tvSaved.text.toString())
             }
         }
     }
