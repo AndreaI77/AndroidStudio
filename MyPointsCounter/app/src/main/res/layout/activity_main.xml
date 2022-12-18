@@ -55,23 +55,6 @@
         app:srcCompat="@drawable/contador_bg"
         tools:ignore="ImageContrastCheck" />
 
-    <Button
-        android:id="@+id/btnSuma"
-        style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/suma"
-        android:text="@string/txt_suma"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@id/btnResta"
-        app:layout_constraintTop_toBottomOf="@id/btnReset"
-        app:layout_constraintVertical_bias="0.111"
-        tools:ignore="TextContrastCheck,TextContrastCheck" />
 
     <Button
         android:id="@+id/btnReset"
@@ -90,21 +73,57 @@
         app:layout_constraintTop_toBottomOf="@id/guideline"
         app:layout_constraintVertical_bias="0.10" />
 
-    <Button
-        android:id="@+id/btnResta"
-        style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_marginStart="24dp"
-        android:backgroundTint="@color/resta"
-        android:text="@string/txt_resta"
-        android:textSize="20sp"
-        android:textStyle="bold"
+    <LinearLayout
+        android:id="@+id/layout_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnReset"
-        app:layout_constraintVertical_bias="0.111"
-        tools:ignore="TextContrastCheck,TextContrastCheck" />
+        app:layout_constraintTop_toBottomOf="@+id/btnReset"
+        app:layout_constraintVertical_bias="0.100000024">
+
+
+        <Button
+            android:id="@+id/btnResta"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/resta"
+            android:text="@string/txt_resta"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.111"
+            tools:ignore="TextContrastCheck,TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btnSuma"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/suma"
+            android:text="@string/txt_suma"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.111"
+            tools:ignore="TextContrastCheck,TextContrastCheck" />
+    </LinearLayout>
+
 
     <ImageButton
         android:id="@+id/ibSave"
