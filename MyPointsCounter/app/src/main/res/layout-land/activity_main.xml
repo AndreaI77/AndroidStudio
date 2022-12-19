@@ -59,11 +59,13 @@
     <Button
         android:id="@+id/btnReset"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/reset"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:text="@string/txt_reset"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -86,11 +88,14 @@
 
         <Button
             android:id="@+id/btnResta"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="150dp"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:layout_weight="1"
             android:backgroundTint="@color/resta"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/txt_resta"
             android:textColor="@color/white"
             android:textSize="20sp"
@@ -101,16 +106,18 @@
             app:layout_constraintStart_toStartOf="@id/guideline"
             app:layout_constraintTop_toBottomOf="@id/btnReset"
             app:layout_constraintVertical_bias="0.0"
-            tools:ignore="TextContrastCheck,TextContrastCheck"
-            style="?android:attr/buttonBarButtonStyle" />
+            tools:ignore="TextContrastCheck,TextContrastCheck" />
 
         <Button
             android:id="@+id/btnSuma"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="150dp"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_weight="1"
             android:backgroundTint="@color/suma"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="@string/txt_suma"
             android:textColor="@color/white"
             android:textSize="20sp"
@@ -121,8 +128,7 @@
             app:layout_constraintStart_toStartOf="@id/btnResta"
             app:layout_constraintTop_toBottomOf="@id/btnReset"
             app:layout_constraintVertical_bias="0.0"
-            tools:ignore="TextContrastCheck,TextContrastCheck"
-            style="?android:attr/buttonBarButtonStyle" />
+            tools:ignore="TextContrastCheck,TextContrastCheck" />
     </LinearLayout>
 
 
