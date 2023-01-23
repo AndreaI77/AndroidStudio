@@ -1,7 +1,10 @@
 package edu.andreaivanova.mypointscounter
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
@@ -107,7 +110,7 @@ class MainActivity : AppCompatActivity() {
 
             //si la función de guardado me devuelve true, hago vibrar el dispositivo
 
-            if(myUtils.savePoints(this, datos)){
+            if(myUtils.savePointsDB(this, datos)){
                 myUtils.vibrate(this)
 
                 //cambio el texto de tvSaved y actualizo el viewModel
@@ -120,5 +123,28 @@ class MainActivity : AppCompatActivity() {
                 mainViewModel.updateInfo(binding.tvSaved.text.toString())
             }
         }
+    }
+    // inflo el menú
+    override fun onCreateOptionsMenu(menu: Menu?):Boolean{
+        val inflate = menuInflater
+        inflate.inflate(R.menu.menu,menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem):Boolean{
+        return when(item.itemId) {
+            R.id.menu_item -> {
+               // poner la acción
+                startActivity(
+                    Intent(this,
+                    HistoricoActivity::class.java).addFlags(
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    )
+                )
+                true
+            }
+            else -> {
+                false
+            }
+       }
     }
 }

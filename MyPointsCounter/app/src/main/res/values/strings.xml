@@ -10,4 +10,10 @@
     <string name="save">guardar</string>
     <string name="error">No se ha guardado la puntuación</string>
     <string name="filename">MyPointsCounter.txt</string>
+    <string name="op1_menu">Historial</string>
+    <string name="txt_puntuacion">En la fecha %s, a las %s horas,\nse registró una puntuación de %d punto/os.</string>
+    <string name="txt_errorDelete">No se pudo eliminar la puntuación</string>
+    <string name="txt_sinItems">No existen puntaciones registradas</string>
+    <string name="txt_borrado">Puntuación eliminada</string>
+    <string name="txt_deshacer">Deshacer</string>
 </resources>

@@ -11,7 +11,9 @@ import android.os.VibratorManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getColor
+import com.google.android.material.snackbar.Snackbar
 import edu.andreaivanova.mypointscounter.R
+import edu.andreaivanova.mypointscounter.adapters.MyPointsCounterDBAdapter
 import edu.andreaivanova.mypointscounter.model.MyPoints
 import java.io.BufferedReader
 import java.io.IOException
@@ -33,20 +35,43 @@ class MyUtils {
         }
         //compruebo si el dispositivo tiene un vibrador y en caso afirmativo, lo hago vibrar
         if (!vibrator.hasVibrator()) {
-            Toast.makeText(context, "No tienes vibrador!!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "No tienes vibrador!", Toast.LENGTH_SHORT).show()
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                  val vibrationEffect =
                      VibrationEffect.createOneShot(
-                             1000,
+                             100,
                  VibrationEffect.DEFAULT_AMPLITUDE)
                  vibrator.vibrate(vibrationEffect)
                  } else {
-                 vibrator.vibrate(1000) // Deprecated API 26
+                 vibrator.vibrate(100) // Deprecated API 26
                 // Toast.makeText(context, "Deprecated version", Toast.LENGTH_SHORT).show()
                  }
              }
     }
+    //función para llamar a la función que inserta nuevos registros en la BD
+    fun savePointsDB(context:Context, datos:MyPoints) :Boolean{
+        var dbHelper= MyPointsCounterDBAdapter(context, null)
+        dbHelper.addPoints(datos)
+        return true
+    }
+    //función para reinsertar los registros eliminados (con su id original)
+    fun savePointsWithId(context:Context, datos:MyPoints) :Boolean{
+        var dbHelper= MyPointsCounterDBAdapter(context, null)
+        dbHelper.reAddPoints(datos)
+        return true
+    }
+    //función para eliminar los registros
+    fun deletePointDB(myPoint:MyPoints,context:Context) :Int{
+        var dbHelper= MyPointsCounterDBAdapter(context, null)
+        return dbHelper.delPoints(myPoint.id)
+    }
+    //función para leer los registros de la BD. Devuelve una lista
+    fun getPoints(context:Context):MutableList<MyPoints>{
+        var dbHelper= MyPointsCounterDBAdapter(context, null)
+        return dbHelper.allPoints()
+    }
+    // función del ejercico anterior usada para escribir en el fichero.
     fun savePoints(context: Context, datos: MyPoints): Boolean {
         try {
             // Si el fichero no existe se crea,
@@ -93,7 +118,6 @@ class MyUtils {
         }else{
             marcador.setTextColor(context.getColor(R.color.black))
         }
-
-
     }
+
 }

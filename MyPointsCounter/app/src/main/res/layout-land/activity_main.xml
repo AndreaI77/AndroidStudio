@@ -41,12 +41,15 @@
 
     <ImageView
         android:id="@+id/ivFondo"
-        android:layout_width="255dp"
-        android:layout_height="240dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="124dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:contentDescription="@string/contador"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:translationZ="-1dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnReset"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.354"
         app:layout_constraintStart_toStartOf="@id/guideline"
@@ -62,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="@color/reset"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
@@ -72,7 +75,8 @@
         app:layout_constraintBottom_toTopOf="@+id/layout_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/guideline" />
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        tools:ignore="TextContrastCheck" />
 
     <LinearLayout
         android:id="@+id/layout_btn"
@@ -89,9 +93,9 @@
         <Button
             android:id="@+id/btnResta"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:backgroundTint="@color/resta"
             android:paddingTop="10dp"
@@ -111,9 +115,9 @@
         <Button
             android:id="@+id/btnSuma"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:backgroundTint="@color/suma"
             android:paddingTop="10dp"
