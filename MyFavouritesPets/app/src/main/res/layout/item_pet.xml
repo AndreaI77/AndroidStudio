@@ -21,8 +21,8 @@
 
         <ImageView
             android:id="@+id/iv_imagen"
-            android:layout_width="133dp"
-            android:layout_height="133dp"
+            android:layout_width="152dp"
+            android:layout_height="152dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -67,10 +67,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@id/iv_imagen"
-            app:layout_constraintTop_toBottomOf="@id/tv_latName"
+            app:layout_constraintTop_toBottomOf="@id/tv_enlace"
             tools:text="clase" />
 
         <TextView
@@ -78,14 +78,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_imagen"
-            app:layout_constraintTop_toBottomOf="@+id/tv_class"
+            app:layout_constraintTop_toBottomOf="@+id/tv_latName"
             tools:ignore="TextContrastCheck"
             tools:text="enlace" />
 
@@ -93,12 +91,27 @@
             android:id="@+id/tv_pelaje"
             android:layout_width="58dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_latName"
+            app:layout_constraintTop_toBottomOf="@+id/tv_enlace"
             tools:text="pelaje" />
+
+        <RatingBar
+            android:id="@+id/rb_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:stepSize="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_imagen" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
