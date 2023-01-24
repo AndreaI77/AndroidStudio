@@ -23,6 +23,7 @@ class HistoricoActivity : AppCompatActivity(),HistoricoRVAdapter.ItemLongClickLi
         super.onCreate(savedInstanceState)
         binding = ActivityHistoricoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         myUtils= MyUtils()
         //obtengo la lista
         lista= myUtils.getPoints(this)

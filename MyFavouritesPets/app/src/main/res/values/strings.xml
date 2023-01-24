@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">MyFavouritePets</string>
     <string name="image">Pet image</string>
+    <string name="bton_add">Añadir</string>
+    <string name="enlace">https://es.wikipedia.org/wiki/%s</string>
+    <string name="noItems">No hay mascotas registradas</string>
+    <string name="nuevo_pet">Nueva mascota:</string>
+    <string name="nombre">Nombre</string>
+    <string name="latName">Nombre científico</string>
+    <string name="btn_clase">Elige clase</string>
+    <string name="btn_pelo">Elige pelaje</string>
+    <string name="rating">Amorosidad:</string>
+    <string name="pelaje">Pelaje: %s</string>
+    <string name="txt_rating">Rating</string>
+    <string name="btn_guardar">Guardar</string>
+    <string name="getImage">Cargar imagen</string>
+    <string name="favorito">Favorito</string>
 </resources>
