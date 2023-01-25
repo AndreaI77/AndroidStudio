@@ -112,6 +112,26 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
         db.close()
         return clase
     }
+    //método que devuelve el listado con todos los registros.
+    fun allClasses(): MutableList<Clase>{
+        var id: Int
+        var name: String
+        var clase : Clase
+        val lista:MutableList<Clase> = ArrayList()
+        val db = this.readableDatabase
+        val cursor: Cursor = db.rawQuery("SELECT * FROM clase;",null)
+        if(cursor.moveToFirst()){
+            do{
+                id = cursor.getInt(0)
+                name = cursor.getString(1)
+                clase = Clase(id,name)
+                lista.add(clase)
+            }while(cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return lista
+    }
     fun getPelaje(num:Int):Pelaje{
         var id =0
         var nombre=""
@@ -127,5 +147,24 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
         cursor.close()
         db.close()
         return pelo
+    }
+    fun obtenerPelajes(): MutableList<Pelaje>{
+        var id: Int
+        var name: String
+        var pelaje : Pelaje
+        val lista:MutableList<Pelaje> = ArrayList()
+        val db = this.readableDatabase
+        val cursor: Cursor = db.rawQuery("SELECT * FROM pelaje;",null)
+        if(cursor.moveToFirst()){
+            do{
+                id = cursor.getInt(0)
+                name = cursor.getString(1)
+                pelaje = Pelaje(id,name)
+                lista.add(pelaje)
+            }while(cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return lista
     }
 }

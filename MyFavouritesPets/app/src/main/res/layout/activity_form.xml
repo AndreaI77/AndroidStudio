@@ -10,11 +10,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_name"
-        android:layout_width="409dp"
+        android:layout_width="0dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="20dp"
+        android:hint="@string/nombre"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,102 +25,107 @@
             android:id="@+id/til_nombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/nombre"
             tools:ignore="TextContrastCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_latName"
-        android:layout_width="409dp"
+        android:layout_width="0dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
+        android:hint="@string/latName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_name">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txt_latName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/latName"
             tools:ignore="TextContrastCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_clase"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:text="@string/btn_clase"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_latName">
+        app:layout_constraintTop_toBottomOf="@id/til_latName" />
 
-        <LinearLayout
-            android:id="@+id/layout_1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginStart="0dp"
-            android:clickable="false"
-            android:clipChildren="false"
-            android:gravity="center|center_vertical"
-            android:orientation="horizontal">
+    <Spinner
+        android:id="@+id/sp_clase"
+        style="@android:style/Widget.Material.Spinner.Underlined"
+        android:layout_width="0dp"
 
-            <Button
-                android:id="@+id/btn_clase"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="0dp"
-                android:text="@string/btn_clase" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:contentDescription="@string/btn_clase"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toStartOf="@id/ib_addClase"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_clase"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
-            <TextView
-                android:id="@+id/tv_clase"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="20dp"
-                android:layout_weight="1"
-                android:textSize="20sp"
-                tools:text="clase" />
+    <ImageButton
+        android:id="@+id/ib_addClase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_weight="1"
+        android:backgroundTint="#673AB7"
+        android:contentDescription="@string/bton_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/sp_clase"
+        app:srcCompat="@android:drawable/ic_input_add"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
-        </LinearLayout>
+    <TextView
+        android:id="@+id/tv_pelo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
 
-        <LinearLayout
-            android:id="@+id/layout_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:text="@string/btn_pelo"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sp_clase" />
 
-            <Button
-                android:id="@+id/btn_pelo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="0dp"
-                android:text="@string/btn_pelo" />
+    <Spinner
+        android:id="@+id/sp_pelaje"
+        style="@android:style/Widget.Material.Spinner.Underlined"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/btn_pelo"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toStartOf="@id/ib_addPelaje"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_pelo"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
-            <TextView
-                android:id="@+id/tv_pelo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="20dp"
-                android:layout_weight="1"
-
-                android:textSize="20sp"
-                tools:text="pelaje" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    <ImageButton
+        android:id="@+id/ib_addPelaje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="#673AB7"
+        android:contentDescription="@string/bton_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/sp_pelaje"
+        app:srcCompat="@android:drawable/ic_input_add" />
 
     <RatingBar
         android:id="@+id/ratingBar"
@@ -137,11 +144,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/rating"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@id/sp_pelaje" />
 
     <Button
         android:id="@+id/btn_guardar"
@@ -156,8 +163,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="108dp"
-        android:layout_height="108dp"
+        android:layout_width="153dp"
+        android:layout_height="128dp"
         android:layout_marginTop="20dp"
         android:contentDescription="@string/image"
         app:layout_constraintEnd_toEndOf="parent"

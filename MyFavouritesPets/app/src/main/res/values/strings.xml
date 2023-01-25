@@ -7,12 +7,13 @@
     <string name="nuevo_pet">Nueva mascota:</string>
     <string name="nombre">Nombre</string>
     <string name="latName">Nombre científico</string>
-    <string name="btn_clase">Elige clase</string>
-    <string name="btn_pelo">Elige pelaje</string>
+    <string name="btn_clase">Elige clase:</string>
+    <string name="btn_pelo">Elige pelaje:</string>
     <string name="rating">Amorosidad:</string>
     <string name="pelaje">Pelaje: %s</string>
     <string name="txt_rating">Rating</string>
     <string name="btn_guardar">Guardar</string>
-    <string name="getImage">Cargar imagen</string>
+    <string name="getImage">Obtener imagen</string>
     <string name="favorito">Favorito</string>
+    <string name="clase">Clase con id %d y nombre %s</string>
 </resources>

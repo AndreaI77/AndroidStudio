@@ -71,6 +71,8 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
             clase.text=pet.clase.nombre
             pelo.text= pet.pelo.nombre
             enlace.text = binding.root.resources.getString(R.string.enlace,pet.latName.replace(' ','_',true))
+            stars.rating=pet.rating.toFloat()
+           // imagen.setImageResource()
             if(pet.favorite == 0){
                // fav.imageTintMode= binding.root.resources.getColor(R.color.red)
                 fav.setBackgroundColor(binding.root.resources.getColor(R.color.red))
@@ -86,7 +88,6 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
                     fav.setBackgroundColor(binding.root.resources.getColor(R.color.grey))
                 }
             }
-
 
             //añado un listener a cada elemento
             itemView.setOnClickListener{
