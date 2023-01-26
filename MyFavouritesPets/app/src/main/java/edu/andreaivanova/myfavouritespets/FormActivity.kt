@@ -1,16 +1,16 @@
 package edu.andreaivanova.myfavouritespets
 
+import edu.andreaivanova.myfavouritespets.ListActivity
+import edu.andreaivanova.myfavouritespets.R
+
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Application
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
@@ -21,7 +21,6 @@ import edu.andreaivanova.myfavouritespets.model.Pelaje
 import edu.andreaivanova.myfavouritespets.model.Pet
 import edu.andreaivanova.myfavouritespets.utils.MyUtils
 import java.io.File
-import java.security.AccessController.getContext
 
 class FormActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFormBinding
@@ -29,7 +28,11 @@ class FormActivity : AppCompatActivity() {
     private lateinit var  listaC:MutableList<Clase>
     private lateinit var myUtils:MyUtils
     private var photoFile: File? = null
-
+    private var REQUEST_CODE =123
+    companion object{
+        const val TAG_APP = "mYFavouritePets"
+        const val EXTRA_NAME = "id"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +48,7 @@ class FormActivity : AppCompatActivity() {
             @Suppress("DEPRECATION")
             this.windowManager.defaultDisplay.rotation
         }
-        // Log.i("DISPLAY", estado.toString())
-
-        //escondo  actionBar si tel está en la posición horizontal
+        //escondo  actionBar si tel está en la posición horizontal, ya que si no, no me entran los componentes
         if(estado == 1 || estado == 3){
             supportActionBar!!.hide()
         }
@@ -56,15 +57,43 @@ class FormActivity : AppCompatActivity() {
         listaC=myUtils.getClases(this)
         listaP= myUtils.getPelaje(this)
 
+
         binding.btnClase.setOnClickListener{
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Elige clase")
-            var list= arrayOf("uno","dos","tres")
-            builder.setItems(list){id, posicion ->
-                Toast.makeText(this)
+
+            val myIntent = Intent(this, ListActivity::class.java).apply {
+                putExtra(EXTRA_NAME, "clase")
             }
+            startActivityForResult(myIntent,REQUEST_CODE)
+        }
+        val list = arrayOf("uno","dos","tres")
+        var item = ""
+        binding.btnPelaje.setOnClickListener {
+            AlertDialog.Builder(this).apply {
+                var selectedPosition = -1
+                setTitle("Elige Pelaje:")
+                setSingleChoiceItems(list, -1) { _, which ->
+                    selectedPosition = which
+                    item = list[selectedPosition]
+                }
+                // binding.tvPelo.text=item
 
+                setPositiveButton(android.R.string.ok) { dialog, _ ->
 
+                    Toast.makeText(
+                        this@FormActivity,
+                        getString(R.string.pelaje, item),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                    Toast.makeText(
+                        this@FormActivity,
+                        getString(R.string.no_insert),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    dialog.dismiss()
+                }
+            }.show()
         }
             binding.btnImagen.setOnClickListener() {
                 // Se crea el fichero donde se guardará la imagen.
@@ -116,24 +145,29 @@ class FormActivity : AppCompatActivity() {
                     } else {
                         rating = binding.ratingBar.rating
                     }
-//                    var clase = binding.spClase.selectedItem as Clase
-//                    var pelaje = binding.spPelaje.selectedItem as Pelaje
                     var fav=0
                     //var pet = Pet(0,nombre,latNombre,photoFile, clase ,pelaje,rating,fav)
 
                 }
                 binding.ibAddClase.setOnClickListener {
+
                     AlertDialog.Builder(this).apply {
                         // Se infla el layout personalizado del diálogo.
+
                         val bindingCustom = DialogLayoutBinding.inflate(layoutInflater)
 
                         setView(bindingCustom.root)
 
                         setPositiveButton(android.R.string.ok) { _, _ ->
-                            var lastId= listaC.last().id
-                            var clase = Clase(lastId+1,bindingCustom.tvNuevoReg.text.toString())
+                            var name=bindingCustom.tvNuevoReg.text.toString()
+                            var lastId= 0
+                            if(listaC.size >0){
+                                lastId=listaC.last().id
+                            }
+                            var clase = Clase(lastId+1,name)
                             listaC.add(clase)
                             myUtils.saveClase(this@FormActivity,clase)
+
                             Toast.makeText(
                                 context,
                                 "Registro insertado: ${bindingCustom.tvNuevoReg.text}",
@@ -143,7 +177,7 @@ class FormActivity : AppCompatActivity() {
                         setNegativeButton(android.R.string.cancel) { dialog, _ ->
                             Toast.makeText(
                                 context,
-                                android.R.string.cancel,
+                                getString(R.string.no_insert),
                                 Toast.LENGTH_SHORT
                             ).show()
                             dialog.dismiss()
@@ -151,7 +185,39 @@ class FormActivity : AppCompatActivity() {
                     }.show()
                 }
                 binding.ibAddPelaje.setOnClickListener {
+                    AlertDialog.Builder(this).apply {
+                        // Se infla el layout personalizado del diálogo.
 
+                        val bindingCustom = DialogLayoutBinding.inflate(layoutInflater)
+
+                        setView(bindingCustom.root)
+
+                        setPositiveButton(android.R.string.ok) { _, _ ->
+                            var name=bindingCustom.tvNuevoReg.text.toString()
+                            var lastId=0
+                            if(listaP.size>0){
+                                listaP.last().id
+                            }
+
+                            var pelaje = Pelaje(lastId+1,name)
+                            listaP.add(pelaje)
+                            myUtils.savePelaje(this@FormActivity,pelaje)
+
+                            Toast.makeText(
+                                context,
+                                "Registro insertado: ${bindingCustom.tvNuevoReg.text}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                            Toast.makeText(
+                                context,
+                                getString(R.string.no_insert),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            dialog.dismiss()
+                        }
+                    }.show()
                 }
 
     }

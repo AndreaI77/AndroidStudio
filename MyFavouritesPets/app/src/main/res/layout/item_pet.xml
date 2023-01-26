@@ -41,7 +41,7 @@
             android:textAlignment="center"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton"
+            app:layout_constraintEnd_toStartOf="@id/imageButton"
             app:layout_constraintStart_toEndOf="@id/iv_imagen"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="nombre" />

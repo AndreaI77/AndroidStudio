@@ -1,6 +1,8 @@
 package edu.andreaivanova.myfavouritespets.adapters
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,6 +72,7 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
             latNom.text = pet.latName
             clase.text=pet.clase.nombre
             pelo.text= pet.pelo.nombre
+
             enlace.text = binding.root.resources.getString(R.string.enlace,pet.latName.replace(' ','_',true))
             stars.rating=pet.rating.toFloat()
            // imagen.setImageResource()
@@ -88,11 +91,15 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
                     fav.setBackgroundColor(binding.root.resources.getColor(R.color.grey))
                 }
             }
+            enlace.setOnClickListener{
+                var texto=binding.root.resources.getString(R.string.enlace,pet.latName.replace(' ','_',true))
+                    val miIntent = Intent( Intent.ACTION_VIEW, Uri.parse(texto))
+            }
 
             //añado un listener a cada elemento
             itemView.setOnClickListener{
-//                Snackbar.make( itemView, binding.root.resources.getString(R.string.txt_puntuacion,myPoint.date, myPoint.hour, myPoint.points),
-//                    Snackbar.LENGTH_LONG).show()
+                Snackbar.make( itemView, binding.root.resources.getString(R.string.clase, pet.id, pet.nombre),
+                    Snackbar.LENGTH_LONG).show()
             }
             //añado otro tipo de listener a cada elemento
             itemView.setOnLongClickListener{

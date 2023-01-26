@@ -17,8 +17,8 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
 
     //creo el companion object con los valores
     companion object{
-        val DATABASE_VERSION = 3
-        val DATABASE_NAME = "MyFavouritesPets.db"
+        val DATABASE_VERSION = 2
+        val DATABASE_NAME = "MyFavouritePets.db"
         val TABLA_CLASE = "clase"
         val COLUMNA_ID =  "id"
         val COLUMNA_NOMBRE = "nombre"
@@ -41,7 +41,7 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
                     "enlace TEXT," +
                     "id_clase INTEGER," +
                     "id_pelaje INTEGER," +
-                    "rating REAL," +
+                    "rating INTEGER," +
                     "favorite INTEGER," +
                     "constraint fk_id_clase foreign key (id_clase) references $TABLA_CLASE (id)," +
                     "constraint fk_id_pelaje foreign key (id_pelaje) references pelaje (id))"
@@ -73,7 +73,7 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
         var idClase:Int
         var idPelo:Int
         var image:String
-        var rating:Float
+        var rating:Int
         var fav:Int
         var pet : Pet
         val lista:MutableList<Pet> = ArrayList()
@@ -87,7 +87,7 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
                 image= cursor.getString(3)
                 idClase = cursor.getInt(4)
                 idPelo = cursor.getInt(5)
-                rating = cursor.getFloat(6)
+                rating = cursor.getInt(6)
                 fav=cursor.getInt(7)
                 pet = Pet (id,name,latName,image,getClase(idClase),getPelaje(idPelo),rating,fav)
                 lista.add(pet)
@@ -116,11 +116,18 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
     //método que inserta clase
     fun addClase(clase:Clase){
         val data = ContentValues()
-        data.put("id",clase.id)
+        //data.put("id",clase.id)
         data.put("nombre", clase.nombre)
         val db = this.writableDatabase
         db.insert("clase", null, data)
         db.close()
+    }
+    fun delClase(id:Int):Int{
+        val args = arrayOf(id.toString())
+        val db = this.writableDatabase
+        val result = db.delete("clase", "id =?",args)
+        db.close()
+        return result
     }
 
     //método que devuelve el listado con todos los registros.
@@ -158,6 +165,15 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
         cursor.close()
         db.close()
         return pelo
+    }
+    //método que inserta clase
+    fun addPelaje(pelaje:Pelaje){
+        val data = ContentValues()
+        //data.put("id",pelaje.id)
+        data.put("nombre", pelaje.nombre)
+        val db = this.writableDatabase
+        db.insert("pelaje", null, data)
+        db.close()
     }
     fun obtenerPelajes(): MutableList<Pelaje>{
         var id: Int

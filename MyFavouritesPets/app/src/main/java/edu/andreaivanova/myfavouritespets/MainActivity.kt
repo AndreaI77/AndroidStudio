@@ -7,6 +7,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import edu.andreaivanova.myfavouritespets.FormActivity
 import edu.andreaivanova.myfavouritespets.adapters.RVAdapter
 import edu.andreaivanova.myfavouritespets.databinding.ActivityMainBinding
 import edu.andreaivanova.myfavouritespets.model.Pet
@@ -32,7 +33,6 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener  {
         setUpRecyclerView()
         binding.fbtnAdd.setOnClickListener(){
             val myIntent = Intent(this, FormActivity::class.java)
-
             startActivity(myIntent)
         }
     }
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener  {
     override fun onItemLongClick(view: View, position: Int) {
         val myIntent = Intent(this, FormActivity::class.java).apply {
             // Se añade la información a pasar por clave-valor.
-            // putExtra(lista.get(position), binding.edTexto.text.toString())
+             putExtra(lista.get(position))
              }
          // Se lanza la nueva activity con el Intent.
         startActivity(myIntent)

@@ -28,9 +28,17 @@ class MyUtils {
         var dbHelper= DBAdapter(context, null)
         dbHelper.addClase(clase)
     }
+    fun deleteClase(context: Context, id:Int):Int{
+        var dbHelper= DBAdapter(context, null)
+        return dbHelper.delClase(id)
+    }
     fun getPelaje(context: Context):MutableList<Pelaje>{
         var dbHelper= DBAdapter(context, null)
         return dbHelper.obtenerPelajes()
+    }
+    fun savePelaje(context: Context, pelaje:Pelaje){
+        var dbHelper= DBAdapter(context, null)
+        dbHelper.addPelaje(pelaje)
     }
     fun createImageFile(context: Context): File {
         // Se crea un timeStamp para el nombre del fichero.
@@ -42,17 +50,5 @@ class MyUtils {
         )
         return File.createTempFile("IMG_$timeStamp", ".jpg", directoryStorage)
     }
-    fun myAlertDialog(context:Context, lista:MutableList<Clase>){
-        val builder = AlertDialog.Builder(context)
-            builder.setTitle("Elige clase")
-        var list=arrayOf(lista)
-            builder.setItems(list){id, posicion ->
-                toast.makeText(context)
 
-            }
-
-
-        }
-
-    }
 }

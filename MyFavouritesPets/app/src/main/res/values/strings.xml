@@ -17,7 +17,12 @@
     <string name="btn_guardar">Guardar</string>
     <string name="getImage">Obtener imagen</string>
     <string name="favorito">Favorito</string>
+    <string name="Borrar">Borrar</string>
+    <string name="borrado">Se ha eliminado el registro %s</string>
+    <string name="deshacer">Deshacer</string>
     <string name="clase">Clase con id %d y nombre %s</string>
     <string name="requerido">Campo requerido</string>
     <string name="ratingError">Selecciona nivel de amorosidad:</string>
+    <string name="txt_noDelete">No se puedo eliminar el registro</string>
+    <string name="no_insert"> No se ha insertado nada</string>
 </resources>
