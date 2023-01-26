@@ -1,3 +1,11 @@
 package edu.andreaivanova.myfavouritespets.model
 
-data class Clase (var id:Int, var nombre:String );
+class Clase {
+     var id : Int =0
+     var nombre : String=""
+
+    override fun toString():String{
+        return nombre
+    }
+
+}

@@ -63,22 +63,29 @@ class FormActivity : AppCompatActivity() {
                     resultCaptura.launch(intent)
             }
             btnGuardar.setOnClickListener(){
+                var nombre:String
+                var latNombre:String
                 if(tilNombre.text.isNullOrEmpty()){
                     tilName.error = "Campo requerido"
+                }else{
+                    nombre= tilNombre.text.toString()
                 }
                 if(txtLatName.text.isNullOrEmpty()){
                     tilLatName.error = "Campo requerido"
+                }else{
+                    latNombre = txtLatName.text.toString()
                 }
+                var clase = spClase.selectedItem
+                var pelaje = spPelaje.selectedItem
+                
             }
             ibAddClase.setOnClickListener{
-                
+
             }
             ibAddPelaje.setOnClickListener{
 
             }
-
         }
-
     }
 
     private var resultCaptura = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
