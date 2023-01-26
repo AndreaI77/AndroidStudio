@@ -42,22 +42,6 @@
             tools:ignore="TextContrastCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Spinner
-        android:id="@+id/sp_clase"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        style="@android:style/Widget.Material.Spinner.Underlined"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="10dp"
-        android:layout_weight="1"
-        android:contentDescription="@string/btn_clase"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toStartOf="@id/ib_addClase"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_latName"
-        tools:ignore="DuplicateSpeakableTextCheck" />
-
     <ImageButton
         android:id="@+id/ib_addClase"
         android:layout_width="wrap_content"
@@ -65,24 +49,11 @@
         android:layout_weight="1"
         android:backgroundTint="#673AB7"
         android:contentDescription="@string/bton_add"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="@id/til_latName"
-        app:layout_constraintTop_toTopOf="@id/sp_clase"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView"
         app:srcCompat="@android:drawable/ic_input_add"
-        tools:ignore="DuplicateSpeakableTextCheck" />
-
-    <Spinner
-        android:id="@+id/sp_pelaje"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        style="@android:style/Widget.Material.Spinner.Underlined"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="10dp"
-        android:contentDescription="@string/btn_pelo"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toStartOf="@id/ib_addPelaje"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sp_clase"
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <ImageButton
@@ -92,8 +63,8 @@
         android:backgroundTint="#673AB7"
         android:contentDescription="@string/bton_add"
         app:layout_constraintEnd_toEndOf="@id/ib_addClase"
-        app:layout_constraintTop_toTopOf="@id/sp_pelaje"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        tools:layout_editor_absoluteY="219dp" />
 
     <TextView
         android:id="@+id/tv_nivelRating"
@@ -151,5 +122,54 @@
         app:layout_constraintHorizontal_bias="0.548"
         app:layout_constraintStart_toEndOf="@+id/ib_addClase"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="#D3D1D1"
+        android:backgroundTint="#D3D1D1"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_clase"
+        app:layout_constraintEnd_toStartOf="@+id/ib_addClase"
+        app:layout_constraintStart_toEndOf="@+id/btn_clase"
+        app:layout_constraintTop_toTopOf="@+id/btn_clase"
+        tools:text="clase" />
+
+    <Button
+        android:id="@+id/btn_clase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/btn_clase"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_latName" />
+
+    <Button
+        android:id="@+id/btn_pelaje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/btn_pelo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_clase" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="#D3D1D1"
+        android:backgroundTint="#D3D1D1"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_pelaje"
+        app:layout_constraintEnd_toStartOf="@+id/ib_addPelaje"
+        app:layout_constraintStart_toEndOf="@+id/btn_pelaje"
+        app:layout_constraintTop_toTopOf="@+id/btn_pelaje"
+        tools:text="pelaje" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

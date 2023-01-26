@@ -50,31 +50,18 @@
 
     <TextView
         android:id="@+id/tv_clase"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:text="@string/btn_clase"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_latName" />
-
-    <Spinner
-        android:id="@+id/sp_clase"
-        style="@android:style/Widget.Material.Spinner.Underlined"
         android:layout_width="0dp"
-
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_weight="1"
-        android:contentDescription="@string/btn_clase"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toStartOf="@id/ib_addClase"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_clase"
-        tools:ignore="DuplicateSpeakableTextCheck" />
+        android:background="#D3D1D1"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_clase"
+        app:layout_constraintEnd_toStartOf="@+id/ib_addClase"
+        app:layout_constraintStart_toEndOf="@+id/btn_clase"
+        app:layout_constraintTop_toTopOf="@+id/btn_clase"
+        tools:text="clase" />
 
     <ImageButton
         android:id="@+id/ib_addClase"
@@ -84,37 +71,27 @@
         android:layout_weight="1"
         android:backgroundTint="#673AB7"
         android:contentDescription="@string/bton_add"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_clase"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/sp_clase"
+        app:layout_constraintTop_toTopOf="@+id/tv_clase"
         app:srcCompat="@android:drawable/ic_input_add"
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <TextView
         android:id="@+id/tv_pelo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:text="@string/btn_pelo"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sp_clase" />
-
-    <Spinner
-        android:id="@+id/sp_pelaje"
-        style="@android:style/Widget.Material.Spinner.Underlined"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_height="0dp"
+
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:contentDescription="@string/btn_pelo"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toStartOf="@id/ib_addPelaje"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_pelo"
-        tools:ignore="DuplicateSpeakableTextCheck" />
+        android:layout_weight="1"
+        android:background="#D3D1D1"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_pelaje"
+        app:layout_constraintEnd_toStartOf="@+id/ib_addPelaje"
+        app:layout_constraintStart_toEndOf="@+id/btn_pelaje"
+        app:layout_constraintTop_toTopOf="@+id/btn_pelaje"
+        tools:text="pelaje" />
 
     <ImageButton
         android:id="@+id/ib_addPelaje"
@@ -123,8 +100,9 @@
         android:layout_marginEnd="20dp"
         android:backgroundTint="#673AB7"
         android:contentDescription="@string/bton_add"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_pelo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/sp_pelaje"
+        app:layout_constraintTop_toTopOf="@+id/tv_pelo"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <RatingBar
@@ -148,7 +126,7 @@
         android:text="@string/rating"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sp_pelaje" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_pelaje" />
 
     <Button
         android:id="@+id/btn_guardar"
@@ -183,5 +161,25 @@
         android:text="@string/getImage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+
+    <Button
+        android:id="@+id/btn_clase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/btn_clase"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_latName" />
+
+    <Button
+        android:id="@+id/btn_pelaje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/btn_pelo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_clase" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
