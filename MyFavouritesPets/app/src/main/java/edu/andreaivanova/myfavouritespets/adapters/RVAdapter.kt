@@ -26,6 +26,7 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
     }
     //Se instancia la interface para el LongClick
     private lateinit var mLongClickListener : ItemLongClickListener
+    private lateinit var mClickListener : ItemClickListener
 
     //interface que debe implementar la clase que use el adaptador
     interface ItemLongClickListener{
@@ -33,6 +34,12 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
     }
     fun setLongClickListener(itemLongClickListener: ItemLongClickListener?) {
         mLongClickListener = itemLongClickListener !!
+    }
+    interface ItemClickListener{
+        fun onItemClick(view: View, position:Int)
+    }
+    fun setClickListener(itemClickListener: ItemClickListener?) {
+        mClickListener = itemClickListener !!
     }
     //inflo la vista de los items y devuelvo el ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -98,8 +105,10 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
 
             //añado un listener a cada elemento
             itemView.setOnClickListener{
-                Snackbar.make( itemView, binding.root.resources.getString(R.string.clase, pet.id, pet.nombre),
-                    Snackbar.LENGTH_LONG).show()
+                mClickListener.onItemClick(it, adapterPosition)
+                true
+//                Snackbar.make( itemView, binding.root.resources.getString(R.string.clase, pet.id, pet.nombre),
+//                    Snackbar.LENGTH_LONG).show()
             }
             //añado otro tipo de listener a cada elemento
             itemView.setOnLongClickListener{

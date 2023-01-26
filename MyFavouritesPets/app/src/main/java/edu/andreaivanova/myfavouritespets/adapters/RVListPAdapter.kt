@@ -3,20 +3,14 @@ package edu.andreaivanova.myfavouritespets.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
-import edu.andreaivanova.myfavouritespets.R
-import edu.andreaivanova.myfavouritespets.databinding.ItemPetBinding
 import edu.andreaivanova.myfavouritespets.databinding.ListLayoutBinding
-
 import edu.andreaivanova.myfavouritespets.model.Clase
-import edu.andreaivanova.myfavouritespets.model.Pet
+import edu.andreaivanova.myfavouritespets.model.Pelaje
 
-class RVListAdapter(lista:MutableList<Clase>): RecyclerView.Adapter<RVListAdapter.ViewHolder>() {
-    var lista:MutableList<Clase> =ArrayList()
+class RVListPAdapter (lista:MutableList<Pelaje>): RecyclerView.Adapter<RVListPAdapter.ViewHolder>() {
+    var lista:MutableList<Pelaje> =ArrayList()
     //inicializo la lista
     init{
         this.lista = lista
@@ -66,7 +60,7 @@ class RVListAdapter(lista:MutableList<Clase>): RecyclerView.Adapter<RVListAdapte
         val nombre: TextView = binding.tvTexto
 
         //junto las variables con los datos del objeto de la lista
-        fun bind(item : Clase){
+        fun bind(item : Pelaje){
             nombre.text = item.nombre.toString()
 
             //añado un listener a cada elemento

@@ -20,6 +20,14 @@ class MyUtils {
         var dbHelper= DBAdapter(context, null)
         return dbHelper.allPets()
     }
+    fun savePet(context: Context, pet:Pet){
+        var dbHelper= DBAdapter(context, null)
+        dbHelper.addPet(pet)
+    }
+    fun delPet(context: Context, id:Int):Int{
+        var dbHelper= DBAdapter(context, null)
+        return dbHelper.deletePet(id)
+    }
     fun getClases(context: Context):MutableList<Clase>{
         var dbHelper= DBAdapter(context, null)
         return dbHelper.allClasses()
@@ -39,6 +47,10 @@ class MyUtils {
     fun savePelaje(context: Context, pelaje:Pelaje){
         var dbHelper= DBAdapter(context, null)
         dbHelper.addPelaje(pelaje)
+    }
+    fun deletePelaje(context: Context, id:Int):Int{
+        var dbHelper= DBAdapter(context, null)
+        return dbHelper.delPelaje(id)
     }
     fun createImageFile(context: Context): File {
         // Se crea un timeStamp para el nombre del fichero.

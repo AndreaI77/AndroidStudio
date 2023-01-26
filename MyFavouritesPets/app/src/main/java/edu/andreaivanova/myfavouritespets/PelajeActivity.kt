@@ -8,27 +8,25 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import edu.andreaivanova.myfavouritespets.FormActivity
-import edu.andreaivanova.myfavouritespets.adapters.RVAdapter
-import edu.andreaivanova.myfavouritespets.adapters.RVListAdapter
-import edu.andreaivanova.myfavouritespets.databinding.ActivityFormBinding
-import edu.andreaivanova.myfavouritespets.databinding.ActivityListBinding
-import edu.andreaivanova.myfavouritespets.model.Clase
+import edu.andreaivanova.myfavouritespets.adapters.RVListPAdapter
+import edu.andreaivanova.myfavouritespets.databinding.ActivityPelajeBinding
 import edu.andreaivanova.myfavouritespets.model.Pelaje
 import edu.andreaivanova.myfavouritespets.utils.MyUtils
 
-class ListActivity : AppCompatActivity(), RVListAdapter.ItemLongClickListener, RVListAdapter.ItemClickListener {
-    private lateinit var binding: ActivityListBinding
-    private lateinit var  lista:MutableList<Clase>
+class PelajeActivity : AppCompatActivity(), RVListPAdapter.ItemLongClickListener, RVListPAdapter.ItemClickListener {
+
+    private lateinit var binding: ActivityPelajeBinding
+    private lateinit var lista:MutableList<Pelaje>
     private lateinit var myUtils: MyUtils
-    private lateinit var myAdapter:RVListAdapter
+    private lateinit var myAdapter:RVListPAdapter
     private lateinit var myRecycler: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityListBinding.inflate(layoutInflater)
+        setContentView(R.layout.activity_pelaje)
+        binding = ActivityPelajeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        myUtils=MyUtils()
+        myUtils= MyUtils()
 
         var nombre=intent.getStringExtra(FormActivity.EXTRA_NAME)
         if(nombre.equals("clase")){
@@ -36,27 +34,27 @@ class ListActivity : AppCompatActivity(), RVListAdapter.ItemLongClickListener, R
         }else if(nombre.equals("pelaje")){
         }
 
-        lista= myUtils.getClases(this)
-        myAdapter = RVListAdapter(lista)
+        lista= myUtils.getPelaje(this)
+        myAdapter = RVListPAdapter(lista)
         myAdapter.setLongClickListener(this)
         myAdapter.setClickListener(this)
-        myRecycler = binding.recyclerView
+        myRecycler = binding.recyclerView3
         myRecycler.setHasFixedSize(true)
         myRecycler.layoutManager = LinearLayoutManager(this)
         myRecycler.adapter = myAdapter
 
         //En caso de que no existen los items en la lista, aviso con un textView
         if (myRecycler.adapter?.itemCount == 0) {
-            binding.textView3.text = getString(R.string.noItems)
+            binding.textView.text = getString(R.string.noItems)
         } else {
-            binding.textView3.text = ""
+            binding.textView.text = ""
         }
     }
-    override fun onItemClick(view:View, position:Int){
-        val clase = lista.get(position)
+    override fun onItemClick(view: View, position:Int){
+        val pelaje = lista.get(position)
         val intentResult: Intent = Intent().apply {
-            // Se añade el valor de la clase.
-            putExtra("claseId", clase.id)
+            // Se añade el id del pelaje.
+            putExtra("pelajeId", pelaje.id)
         }
         setResult(Activity.RESULT_OK,intentResult)
         finish()
@@ -65,18 +63,18 @@ class ListActivity : AppCompatActivity(), RVListAdapter.ItemLongClickListener, R
     override fun onItemLongClick(view: View, position: Int) {
 
         //obtengo el registro de la lista correspondiente a la posición
-        val clase = lista.get(position)
+        val pel = lista.get(position)
 
         //elimino el objeto de la lista, luego de la BD y actualizo el adapter
         lista.removeAt(position)
-        val num = myUtils.deleteClase(this,clase.id)
+        val num = myUtils.deletePelaje(this,pel.id)
         myAdapter.notifyItemRemoved(position)
 
         //si ya se han eliminado todos los Items de la vista, aviso con un textView
         if(lista.size == 0){
-            binding.textView3.text = getString(R.string.noItems)
+            binding.textView.text = getString(R.string.noItems)
         } else {
-            binding.textView3.text = ""
+            binding.textView.text = ""
         }
         //si no se ha eliminado el objeto, aviso con un Snackbar
         if( num == 0){

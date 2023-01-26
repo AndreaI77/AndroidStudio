@@ -28,7 +28,9 @@ class FormActivity : AppCompatActivity() {
     private lateinit var  listaC:MutableList<Clase>
     private lateinit var myUtils:MyUtils
     private var photoFile: File? = null
-    private var REQUEST_CODE =123
+    private var REQUEST_CODE=1234
+    private lateinit var clase :Clase
+    private lateinit var pelaje : Pelaje
     companion object{
         const val TAG_APP = "mYFavouritePets"
         const val EXTRA_NAME = "id"
@@ -56,44 +58,46 @@ class FormActivity : AppCompatActivity() {
         //obtengo las listas
         listaC=myUtils.getClases(this)
         listaP= myUtils.getPelaje(this)
+        var resultadoActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            // Se recupera la información adicional.
+            val data: Intent? = result.data
 
-
+            if (result.resultCode == Activity.RESULT_OK) {
+                val valor = data?.getIntExtra("claseId", 0)
+                for (item in listaC) {
+                    if (item.id == valor) {
+                        clase = item
+                        binding.tvClase.text = item.nombre
+                    }
+                }
+            }
+        }
         binding.btnClase.setOnClickListener{
 
             val myIntent = Intent(this, ListActivity::class.java).apply {
                 putExtra(EXTRA_NAME, "clase")
             }
-            startActivityForResult(myIntent,REQUEST_CODE)
+          resultadoActivity.launch(myIntent)
         }
-        val list = arrayOf("uno","dos","tres")
-        var item = ""
+        var resultadoActivity2 = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            // Se recupera la información adicional.
+            val data: Intent? = result.data
+
+            if (result.resultCode == Activity.RESULT_OK) {
+                val valor = data?.getIntExtra("pelajeId", 0)
+                for (item in listaP) {
+                    if (item.id == valor) {
+                        pelaje = item
+                        binding.tvPelo.text = item.nombre
+                    }
+                }
+            }
+        }
         binding.btnPelaje.setOnClickListener {
-            AlertDialog.Builder(this).apply {
-                var selectedPosition = -1
-                setTitle("Elige Pelaje:")
-                setSingleChoiceItems(list, -1) { _, which ->
-                    selectedPosition = which
-                    item = list[selectedPosition]
-                }
-                // binding.tvPelo.text=item
-
-                setPositiveButton(android.R.string.ok) { dialog, _ ->
-
-                    Toast.makeText(
-                        this@FormActivity,
-                        getString(R.string.pelaje, item),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                    Toast.makeText(
-                        this@FormActivity,
-                        getString(R.string.no_insert),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    dialog.dismiss()
-                }
-            }.show()
+            val myIntent = Intent(this, PelajeActivity::class.java).apply {
+                putExtra(EXTRA_NAME, "pelaje")
+            }
+            resultadoActivity2.launch(myIntent)
         }
             binding.btnImagen.setOnClickListener() {
                 // Se crea el fichero donde se guardará la imagen.
@@ -164,10 +168,12 @@ class FormActivity : AppCompatActivity() {
                             if(listaC.size >0){
                                 lastId=listaC.last().id
                             }
+                            var textoClase =""
                             var clase = Clase(lastId+1,name)
                             listaC.add(clase)
                             myUtils.saveClase(this@FormActivity,clase)
-
+                            textoClase = bindingCustom.tvNuevoReg.text.toString()
+                            binding.tvClase!!.text=textoClase
                             Toast.makeText(
                                 context,
                                 "Registro insertado: ${bindingCustom.tvNuevoReg.text}",
@@ -198,11 +204,11 @@ class FormActivity : AppCompatActivity() {
                             if(listaP.size>0){
                                 listaP.last().id
                             }
-
                             var pelaje = Pelaje(lastId+1,name)
                             listaP.add(pelaje)
                             myUtils.savePelaje(this@FormActivity,pelaje)
-
+                            var textoPelo = bindingCustom.tvNuevoReg.text.toString()
+                            binding.tvPelo!!.text=textoPelo
                             Toast.makeText(
                                 context,
                                 "Registro insertado: ${bindingCustom.tvNuevoReg.text}",
@@ -221,7 +227,6 @@ class FormActivity : AppCompatActivity() {
                 }
 
     }
-
 
     private var resultCaptura = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val data: Intent? = result.data

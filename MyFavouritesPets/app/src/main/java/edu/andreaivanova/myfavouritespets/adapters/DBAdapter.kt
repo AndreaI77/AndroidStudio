@@ -97,6 +97,37 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
         db.close()
         return lista
     }
+    fun addPet(pet:Pet){
+        val data = ContentValues()
+        val lista : MutableList<Int> = ArrayList()
+        val db = this.readableDatabase
+        val cursor: Cursor = db.rawQuery("SELECT id FROM pets;",null)
+        if(cursor.moveToFirst()){
+            do{
+                lista.add( cursor.getInt(0))
+            }while(cursor.moveToNext())
+        }
+        cursor.close()
+        if(!lista.contains(pet.id)){
+            data.put("id", pet.id)
+        }
+        data.put("nombre", pet.nombre)
+        data.put("latName", pet.latName)
+        data.put("enlace", pet.image)
+        data.put("id_clase", pet.clase.id)
+        data.put("id_pelaje", pet.pelo.id)
+        data.put("rating", pet.rating)
+        data.put("favorite", pet.favorite)
+        db.insert("pet", null, data)
+        db.close()
+    }
+    fun deletePet(id:Int):Int{
+        val args = arrayOf(id.toString())
+        val db = this.writableDatabase
+        val result = db.delete("pet", "id =?",args)
+        db.close()
+        return result
+    }
     fun getClase(num:Int):Clase{
         var id =0
         var nombre=""
@@ -116,7 +147,6 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
     //método que inserta clase
     fun addClase(clase:Clase){
         val data = ContentValues()
-        //data.put("id",clase.id)
         data.put("nombre", clase.nombre)
         val db = this.writableDatabase
         db.insert("clase", null, data)
@@ -169,11 +199,17 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
     //método que inserta clase
     fun addPelaje(pelaje:Pelaje){
         val data = ContentValues()
-        //data.put("id",pelaje.id)
         data.put("nombre", pelaje.nombre)
         val db = this.writableDatabase
         db.insert("pelaje", null, data)
         db.close()
+    }
+    fun delPelaje(id:Int):Int{
+        val args = arrayOf(id.toString())
+        val db = this.writableDatabase
+        val result = db.delete("pelaje", "id =?",args)
+        db.close()
+        return result
     }
     fun obtenerPelajes(): MutableList<Pelaje>{
         var id: Int
