@@ -153,8 +153,8 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toEndOf="@+id/btn_imagen"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar"
-        tools:ignore="ImageContrastCheck"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        tools:ignore="ImageContrastCheck" />
 
     <Button
         android:id="@+id/btn_imagen"

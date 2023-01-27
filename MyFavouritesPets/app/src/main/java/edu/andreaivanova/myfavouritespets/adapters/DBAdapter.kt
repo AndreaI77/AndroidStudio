@@ -17,8 +17,8 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
 
     //creo el companion object con los valores
     companion object{
-        val DATABASE_VERSION = 2
-        val DATABASE_NAME = "MyFavouritePets.db"
+        val DATABASE_VERSION = 1
+        val DATABASE_NAME = "MyFavouritesPets.db"
         val TABLA_CLASE = "clase"
         val COLUMNA_ID =  "id"
         val COLUMNA_NOMBRE = "nombre"
@@ -41,7 +41,7 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
                     "enlace TEXT," +
                     "id_clase INTEGER," +
                     "id_pelaje INTEGER," +
-                    "rating INTEGER," +
+                    "rating REAL," +
                     "favorite INTEGER," +
                     "constraint fk_id_clase foreign key (id_clase) references $TABLA_CLASE (id)," +
                     "constraint fk_id_pelaje foreign key (id_pelaje) references pelaje (id))"
@@ -73,7 +73,7 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
         var idClase:Int
         var idPelo:Int
         var image:String
-        var rating:Int
+        var rating:Float
         var fav:Int
         var pet : Pet
         val lista:MutableList<Pet> = ArrayList()
@@ -87,7 +87,7 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
                 image= cursor.getString(3)
                 idClase = cursor.getInt(4)
                 idPelo = cursor.getInt(5)
-                rating = cursor.getInt(6)
+                rating = cursor.getFloat(6)
                 fav=cursor.getInt(7)
                 pet = Pet (id,name,latName,image,getClase(idClase),getPelaje(idPelo),rating,fav)
                 lista.add(pet)
@@ -97,34 +97,48 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
         db.close()
         return lista
     }
-    fun addPet(pet:Pet){
+    fun addPet(pet:Pet): Boolean{
         val data = ContentValues()
-        val lista : MutableList<Int> = ArrayList()
-        val db = this.readableDatabase
-        val cursor: Cursor = db.rawQuery("SELECT id FROM pets;",null)
-        if(cursor.moveToFirst()){
-            do{
-                lista.add( cursor.getInt(0))
-            }while(cursor.moveToNext())
-        }
-        cursor.close()
-        if(!lista.contains(pet.id)){
-            data.put("id", pet.id)
-        }
+//        val lista : MutableList<Int> = ArrayList()
+//        val db = this.readableDatabase
+//        val cursor: Cursor = db.rawQuery("SELECT id FROM pets;",null)
+//        if(cursor.moveToFirst()){
+//            do{
+//                lista.add( cursor.getInt(0))
+//            }while(cursor.moveToNext())
+//        }
+//        cursor.close()
+//        db.close()
+//        if(!lista.contains(pet.id)){
+//            data.put("id", pet.id)
+//        }
         data.put("nombre", pet.nombre)
-        data.put("latName", pet.latName)
+        data.put("latNombre", pet.latName)
         data.put("enlace", pet.image)
         data.put("id_clase", pet.clase.id)
         data.put("id_pelaje", pet.pelo.id)
         data.put("rating", pet.rating)
         data.put("favorite", pet.favorite)
-        db.insert("pet", null, data)
+        val db1 = this.writableDatabase
+        db1.insert("pets", null, data)
+        db1.close()
+        return true
+    }
+    fun updatePet(id:Int, valores: MutableMap<String, String>){
+        val args = arrayOf(id.toString())
+        val data = ContentValues()
+        for(item in valores){
+            data.put( item.key, item.value)
+        }
+        val db = this.writableDatabase
+        db.update("pets", data, "id=?", args)
         db.close()
     }
+
     fun deletePet(id:Int):Int{
         val args = arrayOf(id.toString())
         val db = this.writableDatabase
-        val result = db.delete("pet", "id =?",args)
+        val result = db.delete("pets", "id =?",args)
         db.close()
         return result
     }

@@ -1,9 +1,6 @@
 package edu.andreaivanova.myfavouritespets.utils
 
-import android.R
-import android.app.AlertDialog
 import android.content.Context
-
 import android.os.Environment
 
 import edu.andreaivanova.myfavouritespets.adapters.DBAdapter
@@ -20,13 +17,17 @@ class MyUtils {
         var dbHelper= DBAdapter(context, null)
         return dbHelper.allPets()
     }
-    fun savePet(context: Context, pet:Pet){
+    fun savePet(context: Context, pet:Pet):Boolean{
         var dbHelper= DBAdapter(context, null)
-        dbHelper.addPet(pet)
+        return dbHelper.addPet(pet)
     }
     fun delPet(context: Context, id:Int):Int{
         var dbHelper= DBAdapter(context, null)
         return dbHelper.deletePet(id)
+    }
+    fun updatePet(context:Context,id:Int, valores: MutableMap<String, String> ){
+        var dbHelper= DBAdapter(context, null)
+        return dbHelper.updatePet(id, valores)
     }
     fun getClases(context: Context):MutableList<Clase>{
         var dbHelper= DBAdapter(context, null)

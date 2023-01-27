@@ -14,7 +14,7 @@ import edu.andreaivanova.myfavouritespets.model.Pet
 import edu.andreaivanova.myfavouritespets.utils.MyUtils
 
 
-class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdapter.ItemClickListener  {
+class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdapter.ItemClickListener, RVAdapter.FavoriteClickListener  {
     private lateinit var binding: ActivityMainBinding
     private lateinit var myAdapter: RVAdapter
     private lateinit var myRecycler: RecyclerView
@@ -32,13 +32,19 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
 
         setUpRecyclerView()
         binding.fbtnAdd.setOnClickListener(){
-            val myIntent = Intent(this, FormActivity::class.java)
-            startActivity(myIntent)
+            startActivity(
+                Intent(this,
+                    FormActivity::class.java).addFlags(
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP
+                )
+            )
         }
     }
     private fun setUpRecyclerView() {
         myAdapter = RVAdapter(lista)
         myAdapter.setLongClickListener(this)
+        myAdapter.setClickListener(this)
+        myAdapter.setFavClickListener(this)
         myRecycler = binding.rvPets
         myRecycler.setHasFixedSize(true)
         myRecycler.layoutManager = LinearLayoutManager(this)
@@ -51,13 +57,26 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
             binding.tvNoItem.text = ""
         }
     }
+
+    override fun onFavClick(view: View, position: Int) {
+        var valores = mutableMapOf<String,String>()
+        val pet = lista.get(position)
+        if(pet.favorite == 0){
+            pet.favorite =1
+        }else{
+            pet.favorite = 0
+        }
+        valores["favorite"] = pet.favorite.toString()
+        myUtils.updatePet(this ,pet.id,valores)
+    }
+
     override fun onItemClick(view:View, position:Int){
         val myIntent = Intent(this, FormActivity::class.java).apply {
             // Se añade la información a pasar por clave-valor.
         // putExtra(lista.get(position))
         }
         // Se lanza la nueva activity con el Intent.
-        startActivity(myIntent)
+        //startActivity(myIntent)
     }
 
     //implemento el método de la interface, le paso el item y su posición en la lista

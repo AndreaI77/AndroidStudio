@@ -64,10 +64,13 @@ class PelajeActivity : AppCompatActivity(), RVListPAdapter.ItemLongClickListener
 
         //obtengo el registro de la lista correspondiente a la posición
         val pel = lista.get(position)
-
+        if(binding.textView.text.equals(pel.nombre)){
+            binding.textView.text = ""
+        }
         //elimino el objeto de la lista, luego de la BD y actualizo el adapter
         lista.removeAt(position)
         val num = myUtils.deletePelaje(this,pel.id)
+
         myAdapter.notifyItemRemoved(position)
 
         //si ya se han eliminado todos los Items de la vista, aviso con un textView

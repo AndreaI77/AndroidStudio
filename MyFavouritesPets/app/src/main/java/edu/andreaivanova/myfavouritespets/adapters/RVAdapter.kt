@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import edu.andreaivanova.myfavouritespets.R
 import edu.andreaivanova.myfavouritespets.databinding.ItemPetBinding
 import edu.andreaivanova.myfavouritespets.model.Pet
+import edu.andreaivanova.myfavouritespets.utils.MyUtils
 
 class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHolder>() {
     var lista:MutableList<Pet> =ArrayList()
@@ -27,6 +28,7 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
     //Se instancia la interface para el LongClick
     private lateinit var mLongClickListener : ItemLongClickListener
     private lateinit var mClickListener : ItemClickListener
+    private lateinit var fvClickListener : FavoriteClickListener
 
     //interface que debe implementar la clase que use el adaptador
     interface ItemLongClickListener{
@@ -40,6 +42,14 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
     }
     fun setClickListener(itemClickListener: ItemClickListener?) {
         mClickListener = itemClickListener !!
+    }
+
+    interface FavoriteClickListener{
+        fun onFavClick(view: View, position:Int)
+    }
+
+    fun setFavClickListener(favClickListener: FavoriteClickListener?) {
+        fvClickListener = favClickListener !!
     }
     //inflo la vista de los items y devuelvo el ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -62,7 +72,7 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
 
         //creo el binding para la vista del item
         private val binding = ItemPetBinding.bind(itemView)
-
+        val myUtils= MyUtils()
         //asigno los componentes a las variables
         val nombre: TextView = binding.tvName
         val latNom : TextView =binding.tvLatName
@@ -81,23 +91,24 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
             pelo.text= pet.pelo.nombre
 
             enlace.text = binding.root.resources.getString(R.string.enlace,pet.latName.replace(' ','_',true))
-            stars.rating=pet.rating.toFloat()
+            stars.rating=pet.rating
            // imagen.setImageResource()
             if(pet.favorite == 0){
                // fav.imageTintMode= binding.root.resources.getColor(R.color.red)
-                fav.setBackgroundColor(binding.root.resources.getColor(R.color.red))
+                fav.setColorFilter(binding.root.resources.getColor(R.color.grey))
             }else{
-                fav.setBackgroundColor(binding.root.resources.getColor(R.color.grey))
+                fav.setColorFilter(binding.root.resources.getColor(R.color.red))
             }
+
             fav.setOnClickListener(){
                 if(pet.favorite ==0 ){
-                    pet.favorite =1
-                    fav.setBackgroundColor(binding.root.resources.getColor(R.color.red))
+                    fav.setColorFilter(binding.root.resources.getColor(R.color.red))
                 }else{
-                    pet.favorite = 0
-                    fav.setBackgroundColor(binding.root.resources.getColor(R.color.grey))
+                    fav.setColorFilter(binding.root.resources.getColor(R.color.grey))
                 }
+                fvClickListener.onFavClick(it, adapterPosition)
             }
+
             enlace.setOnClickListener{
                 var texto=binding.root.resources.getString(R.string.enlace,pet.latName.replace(' ','_',true))
                     val miIntent = Intent( Intent.ACTION_VIEW, Uri.parse(texto))

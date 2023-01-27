@@ -25,5 +25,5 @@
     <string name="requerido">Campo requerido</string>
     <string name="ratingError">Selecciona nivel de amorosidad:</string>
     <string name="txt_noDelete">No se pudo eliminar el registro</string>
-    <string name="no_insert"> No se ha insertado nada</string>
+    <string name="no_insert"> No se ha insertado ningún registro.</string>
 </resources>

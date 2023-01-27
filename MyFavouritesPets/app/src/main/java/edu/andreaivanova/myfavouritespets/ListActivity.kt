@@ -71,6 +71,9 @@ class ListActivity : AppCompatActivity(), RVListAdapter.ItemLongClickListener, R
         lista.removeAt(position)
         val num = myUtils.deleteClase(this,clase.id)
         myAdapter.notifyItemRemoved(position)
+        if(binding.textView3.text.equals(clase.nombre)){
+            binding.textView3.text = ""
+        }
 
         //si ya se han eliminado todos los Items de la vista, aviso con un textView
         if(lista.size == 0){
