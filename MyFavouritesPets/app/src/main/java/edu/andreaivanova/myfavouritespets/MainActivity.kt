@@ -1,9 +1,13 @@
 package edu.andreaivanova.myfavouritespets
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -14,7 +18,7 @@ import edu.andreaivanova.myfavouritespets.model.Pet
 import edu.andreaivanova.myfavouritespets.utils.MyUtils
 
 
-class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdapter.ItemClickListener, RVAdapter.FavoriteClickListener  {
+class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdapter.ItemClickListener  {
     private lateinit var binding: ActivityMainBinding
     private lateinit var myAdapter: RVAdapter
     private lateinit var myRecycler: RecyclerView
@@ -44,7 +48,6 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
         myAdapter = RVAdapter(lista)
         myAdapter.setLongClickListener(this)
         myAdapter.setClickListener(this)
-        myAdapter.setFavClickListener(this)
         myRecycler = binding.rvPets
         myRecycler.setHasFixedSize(true)
         myRecycler.layoutManager = LinearLayoutManager(this)
@@ -57,26 +60,29 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
             binding.tvNoItem.text = ""
         }
     }
-
-    override fun onFavClick(view: View, position: Int) {
-        var valores = mutableMapOf<String,String>()
-        val pet = lista.get(position)
-        if(pet.favorite == 0){
-            pet.favorite =1
-        }else{
-            pet.favorite = 0
-        }
-        valores["favorite"] = pet.favorite.toString()
-        myUtils.updatePet(this ,pet.id,valores)
-    }
-
+//    var resultadoActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//        // Se recupera la información adicional.
+//        val data: Intent? = result.data
+//
+//        if (result.resultCode == Activity.RESULT_OK) {
+//            val valor = data?.getIntExtra("claseId", 0)
+//            for (item in lista) {
+//                if (item.id == valor) {
+//                    clase = item
+//                    formViewModel.clase = item
+//                    binding.tvClase.text = item.nombre
+//                }
+//            }
+//        }
+//    }
     override fun onItemClick(view:View, position:Int){
+        var id = lista.get(position).id
         val myIntent = Intent(this, FormActivity::class.java).apply {
             // Se añade la información a pasar por clave-valor.
-        // putExtra(lista.get(position))
+         putExtra( "itemId", id)
         }
         // Se lanza la nueva activity con el Intent.
-        //startActivity(myIntent)
+        startActivity(myIntent)
     }
 
     //implemento el método de la interface, le paso el item y su posición en la lista
@@ -112,5 +118,35 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
                 myAdapter.notifyItemInserted(position)
             }.show()
         }
+    }
+    override fun onCreateOptionsMenu(menu: Menu?):Boolean{
+        val inflate = menuInflater
+        inflate.inflate(R.menu.menu,menu)
+        return true
+    }
+   override fun onOptionsItemSelected(item: MenuItem):Boolean{
+        return when (item.itemId) {
+            R.id.mi_ordenar-> {
+              lista.sortBy { it.nombre.first() }
+                myAdapter.notifyDataSetChanged()
+                true
+            }
+            R.id.mi_amor->{
+                lista.sortByDescending{ it.rating }
+                myAdapter.notifyDataSetChanged()
+                true
+            }
+            R.id.mi_fav ->{
+                lista.filter{it.favorite != 0}
+                myAdapter = RVAdapter(lista)
+                myAdapter.notifyDataSetChanged()
+                true
+            }
+            R.id.mi_todos ->{
+                myAdapter.notifyDataSetChanged()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+       }
     }
 }

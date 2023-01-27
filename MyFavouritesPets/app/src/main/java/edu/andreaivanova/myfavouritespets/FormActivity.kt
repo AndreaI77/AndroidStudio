@@ -31,7 +31,6 @@ class FormActivity : AppCompatActivity() {
     private lateinit var  listaC:MutableList<Clase>
     private lateinit var myUtils:MyUtils
     private var photoFile: File? = null
-    private var REQUEST_CODE=1234
     private lateinit var clase :Clase
     private lateinit var pelaje : Pelaje
     private lateinit var formViewModel : FormViewModel
@@ -75,6 +74,7 @@ class FormActivity : AppCompatActivity() {
         //obtengo las listas
         listaC=myUtils.getClases(this)
         listaP= myUtils.getPelaje(this)
+
         var resultadoActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             // Se recupera la información adicional.
             val data: Intent? = result.data
@@ -96,6 +96,7 @@ class FormActivity : AppCompatActivity() {
                 putExtra(EXTRA_NAME, "clase")
             }
           resultadoActivity.launch(myIntent)
+
         }
         var resultadoActivity2 = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             // Se recupera la información adicional.
@@ -126,6 +127,7 @@ class FormActivity : AppCompatActivity() {
                 binding.imageView.setImageBitmap(thumbnail)
             }
         }
+
         binding.btnImagen.setOnClickListener() {
                 // Se crea el fichero donde se guardará la imagen.
                 photoFile = myUtils.createImageFile(this)
@@ -155,8 +157,9 @@ class FormActivity : AppCompatActivity() {
                // val intent = Intent(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
                 if (intent.resolveActivity(packageManager) != null){
                     resultCaptura.launch(intent)
-                    }
+                }
             }
+
         binding.btnGuardar.setOnClickListener() {
             var nombre=""
             var latNombre=""
@@ -194,6 +197,12 @@ class FormActivity : AppCompatActivity() {
                         "Registro insertado: ${ pet.nombre}",
                         Toast.LENGTH_SHORT
                     ).show()
+                    binding.tilNombre.setText("")
+                    binding.txtLatName.setText("")
+                    binding.tvClase.text=""
+                    binding.tvPelo.text=""
+                    binding.ratingBar.rating = 0.0f
+                    binding.imageView
                 }else{
                     Toast.makeText(
                         this,
@@ -202,8 +211,6 @@ class FormActivity : AppCompatActivity() {
                     ).show()
                 }
             }
-
-
         }
         binding.ibAddClase.setOnClickListener {
 
@@ -221,7 +228,7 @@ class FormActivity : AppCompatActivity() {
                         lastId=listaC.last().id
                     }
                     var textoClase =""
-                    var clase = Clase(lastId+1,name)
+                    clase = Clase(lastId+1,name)
                     formViewModel.clase=clase
                     listaC.add(clase)
                     myUtils.saveClase(this@FormActivity,clase)
@@ -257,7 +264,7 @@ class FormActivity : AppCompatActivity() {
                     if(listaP.size>0){
                         listaP.last().id
                     }
-                    var pelaje = Pelaje(lastId+1,name)
+                    pelaje = Pelaje(lastId+1,name)
                     formViewModel.pelaje = pelaje
                     listaP.add(pelaje)
                     myUtils.savePelaje(this@FormActivity,pelaje)
@@ -279,8 +286,5 @@ class FormActivity : AppCompatActivity() {
                 }
             }.show()
         }
-
     }
-
-
 }

@@ -3,6 +3,7 @@ package edu.andreaivanova.myfavouritespets.adapters
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import edu.andreaivanova.myfavouritespets.R
@@ -28,7 +30,6 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
     //Se instancia la interface para el LongClick
     private lateinit var mLongClickListener : ItemLongClickListener
     private lateinit var mClickListener : ItemClickListener
-    private lateinit var fvClickListener : FavoriteClickListener
 
     //interface que debe implementar la clase que use el adaptador
     interface ItemLongClickListener{
@@ -37,6 +38,7 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
     fun setLongClickListener(itemLongClickListener: ItemLongClickListener?) {
         mLongClickListener = itemLongClickListener !!
     }
+
     interface ItemClickListener{
         fun onItemClick(view: View, position:Int)
     }
@@ -44,13 +46,6 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
         mClickListener = itemClickListener !!
     }
 
-    interface FavoriteClickListener{
-        fun onFavClick(view: View, position:Int)
-    }
-
-    fun setFavClickListener(favClickListener: FavoriteClickListener?) {
-        fvClickListener = favClickListener !!
-    }
     //inflo la vista de los items y devuelvo el ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -101,23 +96,37 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
             }
 
             fav.setOnClickListener(){
+                var valores = mutableMapOf<String,String>()
+
                 if(pet.favorite ==0 ){
+                    pet.favorite =1
                     fav.setColorFilter(binding.root.resources.getColor(R.color.red))
                 }else{
+                    pet.favorite = 0
                     fav.setColorFilter(binding.root.resources.getColor(R.color.grey))
                 }
-                fvClickListener.onFavClick(it, adapterPosition)
+                valores["favorite"] = pet.favorite.toString()
+                myUtils.updatePet(itemView.getContext() ,pet.id,valores)
             }
 
             enlace.setOnClickListener{
-                var texto=binding.root.resources.getString(R.string.enlace,pet.latName.replace(' ','_',true))
-                    val miIntent = Intent( Intent.ACTION_VIEW, Uri.parse(texto))
+               var texto=binding.root.resources.getString(R.string.enlace,pet.latName.replace(' ','_',true))
+                val miIntent = Intent(Intent.ACTION_VIEW, Uri.parse(texto))
+                //startActivity(itemView.getContext(), miIntent, null)
+                itemView.getContext().startActivity(miIntent)
+//                    val miIntent = Intent( Intent.ACTION_VIEW, Uri.parse(texto)).apply{
+//                        if (this.resolveActivity(packageManager) != null)
+//                            startActivity(itemView.getContext())
+//                         else Log.d(
+//                         "DEBUG",
+//                         "Hay un problema para encontrar un navegador.")
+////                    }
             }
 
             //añado un listener a cada elemento
             itemView.setOnClickListener{
                 mClickListener.onItemClick(it, adapterPosition)
-                true
+
 //                Snackbar.make( itemView, binding.root.resources.getString(R.string.clase, pet.id, pet.nombre),
 //                    Snackbar.LENGTH_LONG).show()
             }
