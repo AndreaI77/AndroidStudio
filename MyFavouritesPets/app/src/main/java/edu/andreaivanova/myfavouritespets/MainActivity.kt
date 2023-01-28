@@ -24,7 +24,10 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
     private lateinit var myRecycler: RecyclerView
     private lateinit var myUtils : MyUtils
     private lateinit var lista :MutableList<Pet>
-
+    private var pos =0
+    companion object{
+        const val EXTRA_ID = "itemId"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -60,29 +63,19 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
             binding.tvNoItem.text = ""
         }
     }
-//    var resultadoActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//        // Se recupera la información adicional.
-//        val data: Intent? = result.data
-//
-//        if (result.resultCode == Activity.RESULT_OK) {
-//            val valor = data?.getIntExtra("claseId", 0)
-//            for (item in lista) {
-//                if (item.id == valor) {
-//                    clase = item
-//                    formViewModel.clase = item
-//                    binding.tvClase.text = item.nombre
-//                }
-//            }
-//        }
-//    }
+
     override fun onItemClick(view:View, position:Int){
+        pos=position
         var id = lista.get(position).id
         val myIntent = Intent(this, FormActivity::class.java).apply {
             // Se añade la información a pasar por clave-valor.
-         putExtra( "itemId", id)
+         putExtra( EXTRA_ID, id.toString())
         }
         // Se lanza la nueva activity con el Intent.
         startActivity(myIntent)
+        lista= myUtils.getPets(this)
+        myAdapter = RVAdapter(lista)
+        myAdapter.notifyDataSetChanged()
     }
 
     //implemento el método de la interface, le paso el item y su posición en la lista
@@ -127,7 +120,7 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
    override fun onOptionsItemSelected(item: MenuItem):Boolean{
         return when (item.itemId) {
             R.id.mi_ordenar-> {
-              lista.sortBy { it.nombre.first() }
+              lista.sortBy { it.nombre.toLowerCase().first() }
                 myAdapter.notifyDataSetChanged()
                 true
             }
@@ -137,16 +130,32 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
                 true
             }
             R.id.mi_fav ->{
-                lista.filter{it.favorite != 0}
+                lista=lista.filter{it.favorite > 0} as MutableList<Pet>
                 myAdapter = RVAdapter(lista)
                 myAdapter.notifyDataSetChanged()
                 true
             }
             R.id.mi_todos ->{
+                lista= myUtils.getPets(this)
                 myAdapter.notifyDataSetChanged()
                 true
             }
             else -> super.onOptionsItemSelected(item)
        }
     }
+
+    override fun onStart() {
+        super.onStart()
+        lista= myUtils.getPets(this)
+        myAdapter = RVAdapter(lista)
+        myAdapter.notifyDataSetChanged()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        lista= myUtils.getPets(this)
+        myAdapter = RVAdapter(lista)
+        myAdapter.notifyDataSetChanged()
+    }
+
 }

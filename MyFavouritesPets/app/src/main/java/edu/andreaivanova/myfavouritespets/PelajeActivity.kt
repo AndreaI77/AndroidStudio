@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -63,26 +64,37 @@ class PelajeActivity : AppCompatActivity(), RVListPAdapter.ItemLongClickListener
     override fun onItemLongClick(view: View, position: Int) {
 
         //obtengo el registro de la lista correspondiente a la posición
-        val pel = lista.get(position)
-        if(binding.textView.text.equals(pel.nombre)){
-            binding.textView.text = ""
-        }
-        //elimino el objeto de la lista, luego de la BD y actualizo el adapter
-        lista.removeAt(position)
-        val num = myUtils.deletePelaje(this,pel.id)
 
-        myAdapter.notifyItemRemoved(position)
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.att)
+        builder.setMessage(R.string.txt_msg)
+        builder.setPositiveButton(android.R.string.ok){
+                dialog, which ->
+            val pel = lista.get(position)
+            if(binding.textView.text.equals(pel.nombre)){
+                binding.textView.text = ""
+            }
+            //elimino el objeto de la lista, luego de la BD y actualizo el adapter
+            lista.removeAt(position)
+            val num = myUtils.deletePelaje(this,pel.id)
 
-        //si ya se han eliminado todos los Items de la vista, aviso con un textView
-        if(lista.size == 0){
-            binding.textView.text = getString(R.string.noItems)
-        } else {
-            binding.textView.text = ""
+            myAdapter.notifyItemRemoved(position)
+
+            //si ya se han eliminado todos los Items de la vista, aviso con un textView
+            if(lista.size == 0){
+                binding.textView.text = getString(R.string.noItems)
+            } else {
+                binding.textView.text = ""
+            }
+            //si no se ha eliminado el objeto, aviso con un Snackbar
+            if( num == 0){
+                Snackbar.make( view, binding.root.resources.getString(R.string.txt_noDelete),
+                    Snackbar.LENGTH_LONG).show()
+            }
         }
-        //si no se ha eliminado el objeto, aviso con un Snackbar
-        if( num == 0){
-            Snackbar.make( view, binding.root.resources.getString(R.string.txt_noDelete),
-                Snackbar.LENGTH_LONG).show()
-        }
+        builder.setNegativeButton("No", null)
+        builder.show()
+
+
     }
 }

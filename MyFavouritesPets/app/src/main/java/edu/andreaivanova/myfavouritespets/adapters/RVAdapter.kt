@@ -109,18 +109,11 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
                 myUtils.updatePet(itemView.getContext() ,pet.id,valores)
             }
 
+            //lanzo un intent para abrir el navegador y buscar la página web
             enlace.setOnClickListener{
                var texto=binding.root.resources.getString(R.string.enlace,pet.latName.replace(' ','_',true))
                 val miIntent = Intent(Intent.ACTION_VIEW, Uri.parse(texto))
-                //startActivity(itemView.getContext(), miIntent, null)
                 itemView.getContext().startActivity(miIntent)
-//                    val miIntent = Intent( Intent.ACTION_VIEW, Uri.parse(texto)).apply{
-//                        if (this.resolveActivity(packageManager) != null)
-//                            startActivity(itemView.getContext())
-//                         else Log.d(
-//                         "DEBUG",
-//                         "Hay un problema para encontrar un navegador.")
-////                    }
             }
 
             //añado un listener a cada elemento

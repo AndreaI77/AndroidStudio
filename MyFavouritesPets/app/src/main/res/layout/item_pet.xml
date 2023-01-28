@@ -9,7 +9,6 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    android:padding="10dp"
     app:cardBackgroundColor="#EAEFEB"
     app:cardCornerRadius="10dp"
     app:cardElevation="8dp">
@@ -99,12 +98,13 @@
 
         <RatingBar
             android:id="@+id/rb_rating"
-            android:layout_width="233dp"
-            android:layout_height="44dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:isIndicator="true"
             android:numStars="5"
+            android:paddingTop="0dp"
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:stepSize="1"
@@ -117,6 +117,7 @@
             android:id="@+id/imageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#F4F1F1"
             android:contentDescription="@string/favorito"
             android:scaleX="0.8"
             android:scaleY="0.8"
@@ -124,7 +125,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/favorite_48px_1_"
-            app:tint="#838080" />
+            app:tint="#838080"
+            tools:ignore="TouchTargetSizeCheck" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,11 +29,16 @@ class FormActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFormBinding
     private lateinit var  listaP:MutableList<Pelaje>
     private lateinit var  listaC:MutableList<Clase>
+    private lateinit var lista:MutableList<Pet>
     private lateinit var myUtils:MyUtils
     private var photoFile: File? = null
     private lateinit var clase :Clase
     private lateinit var pelaje : Pelaje
     private lateinit var formViewModel : FormViewModel
+    private var modificar=false
+    private var fav = 0
+    private var id:String? =null
+
 
     companion object{
         const val TAG_APP = "MyFavouritesPets"
@@ -74,6 +79,27 @@ class FormActivity : AppCompatActivity() {
         //obtengo las listas
         listaC=myUtils.getClases(this)
         listaP= myUtils.getPelaje(this)
+        lista=myUtils.getPets(this)
+
+
+        id=intent.getStringExtra(MainActivity.EXTRA_ID)
+        if(id != null){
+
+            for (item in lista) {
+                if (item.id == id!!.toInt()) {
+                    clase = item.clase
+                    pelaje = item.pelo
+                    binding.tvClase.text = item.clase.nombre
+                    binding.tvPelo.text = item.pelo.nombre
+                    binding.ratingBar.rating = item.rating
+                    binding.tilNombre.setText(item.nombre)
+                    binding.txtLatName.setText(item.latName)
+                    fav = item.favorite
+//                    binding.imageView
+                    modificar = true
+                }
+            }
+        }
 
         var resultadoActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             // Se recupera la información adicional.
@@ -86,6 +112,7 @@ class FormActivity : AppCompatActivity() {
                         clase = item
                         formViewModel.clase = item
                         binding.tvClase.text = item.nombre
+                        binding.tvClase.setTextColor(getResources().getColor(R.color.black))
                     }
                 }
             }
@@ -109,6 +136,7 @@ class FormActivity : AppCompatActivity() {
                         pelaje = item
                         formViewModel.pelaje=item
                         binding.tvPelo.text = item.nombre
+                        binding.tvPelo.setTextColor(getResources().getColor(R.color.black))
                     }
                 }
             }
@@ -161,10 +189,10 @@ class FormActivity : AppCompatActivity() {
             }
 
         binding.btnGuardar.setOnClickListener() {
-            var nombre=""
-            var latNombre=""
-            var rating=0.0f
-            var image= "enlace"
+            var nombre = ""
+            var latNombre = ""
+            var rating = 0.0f
+            var image = "enlace"
             var result = true
             if (binding.tilNombre.text.isNullOrEmpty()) {
                 binding.tilName.error = getString(R.string.requerido)
@@ -178,6 +206,15 @@ class FormActivity : AppCompatActivity() {
             } else {
                 latNombre = binding.txtLatName.text.toString()
             }
+            if (binding.tvClase.text.isNullOrBlank()){
+                binding.tvClase.text = getString(R.string.btn_clase)
+                binding.tvClase.setTextColor(getResources().getColor(R.color.red))
+            }
+            if (binding.tvPelo.text.isNullOrBlank()){
+                binding.tvPelo.text = getString(R.string.btn_clase)
+                binding.tvPelo.setTextColor(getResources().getColor(R.color.red))
+            }
+
             if (binding.ratingBar.rating == 0.0f ) {
                 binding.tvNivelRating.text = getString(R.string.ratingError)
                 binding.tvNivelRating.setTextColor(getResources().getColor(R.color.red))
@@ -185,31 +222,47 @@ class FormActivity : AppCompatActivity() {
                 result = false
             } else {
                 rating = binding.ratingBar.rating
-                binding.tvNivelRating.text = getString(R.string.txt_rating)
+                binding.tvNivelRating.text = getString(R.string.rating)
                 binding.tvNivelRating.setTextColor(getResources().getColor(R.color.black))
             }
-            var fav=0
+
             if(result){
-                var pet = Pet(0,nombre ,latNombre ,image, clase ,pelaje, rating, fav)
-                if(myUtils.savePet(this,pet)){
-                    Toast.makeText(
-                        this,
-                        "Registro insertado: ${ pet.nombre}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    binding.tilNombre.setText("")
-                    binding.txtLatName.setText("")
-                    binding.tvClase.text=""
-                    binding.tvPelo.text=""
-                    binding.ratingBar.rating = 0.0f
-                    binding.imageView
+                if(modificar){
+
+                    var valores = mutableMapOf<String,String>()
+                    valores["nombre"]= nombre
+                    valores["latNombre"] = latNombre
+                    valores["enlace"] = image
+                    valores["id_clase"]=clase.id.toString()
+                    valores["id_pelaje"]=pelaje.id.toString()
+                    valores["rating"]=rating.toString()
+                    valores["favorite"]=fav.toString()
+                    myUtils.updatePet(this,id!!.toInt(), valores)
+                    finish()
                 }else{
-                    Toast.makeText(
-                        this,
-                        getString(R.string.no_insert),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    fav=0
+                    var pet = Pet(0,nombre ,latNombre ,image, clase ,pelaje, rating, fav)
+                    if(myUtils.savePet(this,pet)){
+                        Toast.makeText(
+                            this,
+                            "Registro insertado: ${ pet.nombre}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        binding.tilNombre.setText("")
+                        binding.txtLatName.setText("")
+                        binding.tvClase.text=""
+                        binding.tvPelo.text=""
+                        binding.ratingBar.rating = 0.0f
+                        binding.imageView
+                    }else{
+                        Toast.makeText(
+                            this,
+                            getString(R.string.no_insert),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
+
             }
         }
         binding.ibAddClase.setOnClickListener {
@@ -227,13 +280,14 @@ class FormActivity : AppCompatActivity() {
                     if(listaC.size >0){
                         lastId=listaC.last().id
                     }
-                    var textoClase =""
+
                     clase = Clase(lastId+1,name)
                     formViewModel.clase=clase
                     listaC.add(clase)
                     myUtils.saveClase(this@FormActivity,clase)
-                    textoClase = bindingCustom.tvNuevoReg.text.toString()
-                    binding.tvClase!!.text=textoClase
+
+                    binding.tvClase!!.text=name
+                    binding.tvClase.setTextColor(getResources().getColor(R.color.black))
                     Toast.makeText(
                         context,
                         "Registro insertado: ${bindingCustom.tvNuevoReg.text}",
@@ -262,14 +316,14 @@ class FormActivity : AppCompatActivity() {
                     var name=bindingCustom.tvNuevoReg.text.toString()
                     var lastId=0
                     if(listaP.size>0){
-                        listaP.last().id
+                        lastId=listaP.last().id
                     }
                     pelaje = Pelaje(lastId+1,name)
                     formViewModel.pelaje = pelaje
                     listaP.add(pelaje)
                     myUtils.savePelaje(this@FormActivity,pelaje)
-                    var textoPelo = bindingCustom.tvNuevoReg.text.toString()
-                    binding.tvPelo!!.text=textoPelo
+                    binding.tvPelo!!.text=name
+                    binding.tvPelo.setTextColor(getResources().getColor(R.color.black))
                     Toast.makeText(
                         context,
                         "Registro insertado: ${bindingCustom.tvNuevoReg.text}",

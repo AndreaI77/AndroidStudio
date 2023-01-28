@@ -1,8 +1,8 @@
 package edu.andreaivanova.myfavouritespets.utils
 
+
 import android.content.Context
 import android.os.Environment
-
 import edu.andreaivanova.myfavouritespets.adapters.DBAdapter
 import edu.andreaivanova.myfavouritespets.model.Clase
 import edu.andreaivanova.myfavouritespets.model.Pelaje
@@ -13,6 +13,7 @@ import java.util.*
 
 
 class MyUtils {
+
     fun getPets(context: Context):MutableList<Pet>{
         var dbHelper= DBAdapter(context, null)
         return dbHelper.allPets()

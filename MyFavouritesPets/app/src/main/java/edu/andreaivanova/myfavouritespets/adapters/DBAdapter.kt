@@ -128,7 +128,14 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
         val args = arrayOf(id.toString())
         val data = ContentValues()
         for(item in valores){
-            data.put( item.key, item.value)
+            if(item.key.equals("id_clase") || item.key=="id_pelaje" || item.key == "favorite"){
+                data.put(item.key, item.value.toInt())
+            }else if ( item.key=="rating"){
+                data.put(item.key,item.value.toFloat())
+            }else{
+                data.put( item.key, item.value)
+            }
+
         }
         val db = this.writableDatabase
         db.update("pets", data, "id=?", args)

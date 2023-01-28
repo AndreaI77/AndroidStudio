@@ -3,21 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission
-        android:name="android.permission.CAMERA"
-        android:required="true" />
+    <uses-permission android:name="android.hardware.camera" android:required="true"/>
+<!--    <uses-permission-->
+<!--        android:name="android.permission.CAMERA"-->
+<!--        android:required="true" />-->
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
+<!--    <uses-feature-->
+<!--        android:name="android.hardware.camera"-->
+<!--        android:required="true" />-->
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/pets3"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/pets3"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyFavouritesPets"
         tools:targetApi="31">
