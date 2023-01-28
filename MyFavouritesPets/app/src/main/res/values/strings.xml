@@ -30,6 +30,8 @@
     <string name="mi_todos">Ver todos</string>
     <string name="mi_amor">Ordenar por amorosidad</string>
     <string name="mi_favoritos">Ver favoritos</string>
-    <string name = "att"> Atención</string>
-    <string name = "txt_msg">Quieres eliminar el registro?</string>
+    <string name="att"> Atención</string>
+    <string name="txt_msg">Quieres eliminar el registro?</string>
+    <string name = "titulo1">My Favorite</string>
+    <string name = "titulo2">Pets</string>
 </resources>

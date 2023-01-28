@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -80,37 +81,50 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
 
     //implemento el método de la interface, le paso el item y su posición en la lista
     override fun onItemLongClick(view: View, position: Int) {
-
         //obtengo el registro de la lista correspondiente a la posición
-        val pet = lista.get(position)
 
-        //elimino el objeto de la lista, luego de la BD y actualizo el adapter
-        lista.removeAt(position)
-        val num = myUtils.delPet(this,pet.id)
-        myAdapter.notifyItemRemoved(position)
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.att)
+        builder.setMessage(R.string.txt_msg)
+        builder.setPositiveButton(android.R.string.ok) { dialog, which ->
+            //obtengo el registro de la lista correspondiente a la posición
+            val pet = lista.get(position)
 
-        //si ya se han eliminado todos los Items de la vista, aviso con un textView
-        if(lista.size == 0){
-            binding.tvNoItem.text = getString(R.string.noItems)
-        } else {
-            binding.tvNoItem.text = ""
+            //elimino el objeto de la lista, luego de la BD y actualizo el adapter
+            lista.removeAt(position)
+            val num = myUtils.delPet(this, pet.id)
+            myAdapter.notifyItemRemoved(position)
+
+            //si ya se han eliminado todos los Items de la vista, aviso con un textView
+            if (lista.size == 0) {
+                binding.tvNoItem.text = getString(R.string.noItems)
+            } else {
+                binding.tvNoItem.text = ""
+            }
+            //si no se ha eliminado el objeto, aviso con un Snackbar
+            if (num == 0) {
+                Snackbar.make(
+                    view, binding.root.resources.getString(R.string.sinBorrado),
+                    Snackbar.LENGTH_LONG
+                ).show()
+            } else {
+                /*si se ha eliminado el registro, doy la opción de deshacer la eliminación
+                    en cual caso la inserto en la BD con su propio Id, lo añado a la lista
+                    y actualizo el adapter
+                 */
+                Snackbar.make(
+                    binding.root, binding.root.resources.getString(R.string.borrado, pet.nombre),
+                    Snackbar.LENGTH_LONG
+                ).setAction(binding.root.resources.getString(R.string.deshacer)) {
+                    lista.add(position, pet)
+                    myUtils.savePet(this, pet)
+                    myAdapter.notifyItemInserted(position)
+                }.show()
+            }
         }
-        //si no se ha eliminado el objeto, aviso con un Snackbar
-        if( num == 0){
-            Snackbar.make( view, binding.root.resources.getString(R.string.sinBorrado),
-                Snackbar.LENGTH_LONG).show()
-        }else{
-            /*si se ha eliminado el registro, doy la opción de deshacer la eliminación
-                en cual caso la inserto en la BD con su propio Id, lo añado a la lista
-                y actualizo el adapter
-             */
-            Snackbar.make( binding.root, binding.root.resources.getString(R.string.borrado,pet.nombre),
-                Snackbar.LENGTH_LONG).setAction(binding.root.resources.getString(R.string.deshacer)) {
-                lista.add(position,pet)
-                myUtils.savePet(this,pet)
-                myAdapter.notifyItemInserted(position)
-            }.show()
-        }
+        builder.setNegativeButton("No", null)
+        builder.show()
+
     }
     override fun onCreateOptionsMenu(menu: Menu?):Boolean{
         val inflate = menuInflater
@@ -130,8 +144,7 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
                 true
             }
             R.id.mi_fav ->{
-                lista=lista.filter{it.favorite > 0} as MutableList<Pet>
-                myAdapter = RVAdapter(lista)
+                lista.filter{it.favorite > 0} as MutableList<Pet>
                 myAdapter.notifyDataSetChanged()
                 true
             }
@@ -143,19 +156,4 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
             else -> super.onOptionsItemSelected(item)
        }
     }
-
-    override fun onStart() {
-        super.onStart()
-        lista= myUtils.getPets(this)
-        myAdapter = RVAdapter(lista)
-        myAdapter.notifyDataSetChanged()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        lista= myUtils.getPets(this)
-        myAdapter = RVAdapter(lista)
-        myAdapter.notifyDataSetChanged()
-    }
-
 }
