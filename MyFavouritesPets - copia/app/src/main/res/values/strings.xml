@@ -24,14 +24,14 @@
     <string name="clase">Clase con id %d y nombre %s</string>
     <string name="requerido">Campo requerido</string>
     <string name="ratingError">Selecciona nivel de amorosidad:</string>
-    <string name="txt_noDelete">No se puede eliminar el registro. \nEstá asociado a otros registros.</string>
+    <string name="txt_noDelete">No se puede eliminar el registro</string>
     <string name="no_insert"> No se ha insertado ningún registro.</string>
     <string name="mi_ordenar">Ordenar por nombre</string>
     <string name="mi_todos">Ver todos</string>
     <string name="mi_amor">Ordenar por amorosidad</string>
     <string name="mi_favoritos">Ver favoritos</string>
     <string name="att"> Atención</string>
-    <string name="txt_msg">¿Quieres eliminar el registro?</string>
+    <string name="txt_msg">Quieres eliminar el registro?</string>
     <string name = "titulo1">My Favorite</string>
     <string name = "titulo2">Pets</string>
     <string name = "logo">Logo mascotas</string>
