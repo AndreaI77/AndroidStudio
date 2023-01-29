@@ -2,11 +2,7 @@ package edu.andreaivanova.myfavouritespets.utils
 
 
 import android.content.Context
-import android.net.Uri
 import android.os.Environment
-import androidx.appcompat.app.AlertDialog
-import com.google.android.material.snackbar.Snackbar
-import edu.andreaivanova.myfavouritespets.R
 import edu.andreaivanova.myfavouritespets.adapters.DBAdapter
 import edu.andreaivanova.myfavouritespets.model.Clase
 import edu.andreaivanova.myfavouritespets.model.Pelaje
@@ -17,51 +13,47 @@ import java.util.*
 
 
 class MyUtils {
-
+    //obtengo todos los pets
     fun getPets(context: Context):MutableList<Pet>{
         var dbHelper= DBAdapter(context, null)
         return dbHelper.allPets()
     }
-    fun getFavPets(context: Context):MutableList<Pet>{
-        var dbHelper= DBAdapter(context, null)
-        return dbHelper.favPets()
-    }
+    // inserto pet
     fun savePet(context: Context, pet:Pet):Boolean{
         var dbHelper= DBAdapter(context, null)
         return dbHelper.addPet(pet)
     }
-    fun delPet(context: Context, id:Int):Int{
+    // borro el registro según el id y la tabla pasada por parámetro
+    fun delItem(context: Context, id:Int, tabla:String):Int{
         var dbHelper= DBAdapter(context, null)
-        return dbHelper.deletePet(id)
+        return dbHelper.deleteItem(id, tabla)
     }
+    //actualizo pet
     fun updatePet(context:Context,id:Int, valores: MutableMap<String, String> ){
         var dbHelper= DBAdapter(context, null)
         return dbHelper.updatePet(id, valores)
     }
+    // obtengo clases
     fun getClases(context: Context):MutableList<Clase>{
         var dbHelper= DBAdapter(context, null)
         return dbHelper.allClasses()
     }
+    // inserto clase
     fun saveClase(context: Context, clase:Clase){
         var dbHelper= DBAdapter(context, null)
         dbHelper.addClase(clase)
     }
-    fun deleteClase(context: Context, id:Int):Int{
-        var dbHelper= DBAdapter(context, null)
-        return dbHelper.delClase(id)
-    }
+    // obtengo pelajes
     fun getPelaje(context: Context):MutableList<Pelaje>{
         var dbHelper= DBAdapter(context, null)
         return dbHelper.obtenerPelajes()
     }
+    // inserto pelaje
     fun savePelaje(context: Context, pelaje:Pelaje){
         var dbHelper= DBAdapter(context, null)
         dbHelper.addPelaje(pelaje)
     }
-    fun deletePelaje(context: Context, id:Int):Int{
-        var dbHelper= DBAdapter(context, null)
-        return dbHelper.delPelaje(id)
-    }
+     //crea el file y lo devuelve
     fun createImageFile(context: Context): File {
         // Se crea un timeStamp para el nombre del fichero.
         val timeStamp = SimpleDateFormat("yyyyMMdd").format(Date())

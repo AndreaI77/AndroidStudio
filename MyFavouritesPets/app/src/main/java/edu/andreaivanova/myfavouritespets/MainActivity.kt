@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
        lista=myUtils.getPets(this)
 
         setUpRecyclerView()
+        // el botón que  lanza el intent para ir al formulario
         binding.fbtnAdd.setOnClickListener(){
             startActivity(
                 Intent(this,
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
             )
         }
     }
+    // creo el recyclerView
     private fun setUpRecyclerView() {
         myAdapter = RVAdapter(lista)
         myAdapter.setLongClickListener(this)
@@ -64,11 +66,11 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
             binding.tvNoItem.text = ""
         }
     }
-
+        // al hacer click sobre un item,
+        // le paso al formulario su id para modificarlo
     override fun onItemClick(view:View, position:Int){
         pos=position
         var id = lista.get(position).id
-
 
         val myIntent = Intent(this, FormActivity::class.java).apply {
             // Se añade la información a pasar por clave-valor.
@@ -80,18 +82,18 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
 
     //implemento el método de la interface, le paso el item y su posición en la lista
     override fun onItemLongClick(view: View, position: Int) {
-        //obtengo el registro de la lista correspondiente a la posición
-
+        // pido confirmación antes de eliminarlo
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.att)
         builder.setMessage(R.string.txt_msg)
+       //si se confirma la eliminación, elimino el item
         builder.setPositiveButton(android.R.string.ok) { dialog, which ->
             //obtengo el registro de la lista correspondiente a la posición
             val pet = lista.get(position)
 
             //elimino el objeto de la lista, luego de la BD y actualizo el adapter
             lista.removeAt(position)
-            val num = myUtils.delPet(this, pet.id)
+            val num = myUtils.delItem(this, pet.id, "pets")
             myAdapter.notifyItemRemoved(position)
 
             //si ya se han eliminado todos los Items de la vista, aviso con un textView
@@ -125,32 +127,38 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
         builder.show()
 
     }
+    //creo el menú con opciones
     override fun onCreateOptionsMenu(menu: Menu?):Boolean{
         val inflate = menuInflater
         inflate.inflate(R.menu.menu,menu)
         return true
     }
+    // asigno las funciones a las opciones del menu
    override fun onOptionsItemSelected(item: MenuItem):Boolean{
         return when (item.itemId) {
             R.id.mi_ordenar-> {
+                //ordeno por nombre y recargo el recycler
               lista.sortBy { it.nombre.toLowerCase().first() }
                 myAdapter.notifyDataSetChanged()
                 true
             }
             R.id.mi_amor->{
+                //ordeno por amorosidad y recargo el recycler
                 lista.sortByDescending{ it.rating }
                 myAdapter.notifyDataSetChanged()
                 true
             }
             R.id.mi_fav ->{
-                //lista.filter{it.favorite > 0} as MutableList<Pet>
-                lista = myUtils.getFavPets(this)
+                //filtro los favoritos y recargo el recycler
+                lista.retainAll{it.favorite == 1 }
                 myAdapter.notifyDataSetChanged()
                 true
             }
             R.id.mi_todos ->{
-                lista= myUtils.getPets(this)
-                myAdapter.notifyDataSetChanged()
+                // obtengo todos los datos y recargo el recycler
+                //myRecycler.invalidate()
+               lista= myUtils.getPets(this)
+               myAdapter.notifyDataSetChanged()
                 true
             }
             else -> super.onOptionsItemSelected(item)

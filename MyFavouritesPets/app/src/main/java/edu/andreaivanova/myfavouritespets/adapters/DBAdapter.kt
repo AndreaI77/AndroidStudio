@@ -23,7 +23,7 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
         val COLUMNA_ID =  "id"
         val COLUMNA_NOMBRE = "nombre"
     }
-
+    //establezco la BD
     override fun onCreate(db: SQLiteDatabase?) {
         try{
             val crearTablaClase = "CREATE TABLE $TABLA_CLASE(" +
@@ -51,7 +51,7 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
             Log.e("$TAG (onCreate", e.message.toString())
         }
     }
-
+    //sobreescribo onUpgrade
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
         try {
             val dropTablaPets = "DROP TABLE IF EXISTS pets"
@@ -78,6 +78,8 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
         var pet : Pet
         val lista:MutableList<Pet> = ArrayList()
         val db = this.readableDatabase
+        //obtengo los registros de la tabla,
+        // asigno las variables en cada fila del cursor, creo y Pet y lo añado a la lista
         val cursor: Cursor = db.rawQuery("SELECT * FROM pets;",null)
         if(cursor.moveToFirst()){
             do{
@@ -93,56 +95,14 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
                 lista.add(pet)
             }while(cursor.moveToNext())
         }
+        //cierro el cursor, la bd y devuelvo la lista
         cursor.close()
         db.close()
         return lista
     }
-    fun favPets(): MutableList<Pet>{
-        var id: Int
-        var name: String
-        var latName:String
-        var idClase:Int
-        var idPelo:Int
-        var image:String
-        var rating:Float
-        var fav:Int
-        var pet : Pet
-        val lista:MutableList<Pet> = ArrayList()
-        val db = this.readableDatabase
-        val cursor: Cursor = db.rawQuery("SELECT * FROM pets where favorite = 1 ;",null)
-        if(cursor.moveToFirst()){
-            do{
-                id = cursor.getInt(0)
-                name = cursor.getString(1)
-                latName = cursor.getString(2)
-                image= cursor.getString(3)
-                idClase = cursor.getInt(4)
-                idPelo = cursor.getInt(5)
-                rating = cursor.getFloat(6)
-                fav=cursor.getInt(7)
-                pet = Pet (id,name,latName,image,getClase(idClase),getPelaje(idPelo),rating,fav)
-                lista.add(pet)
-            }while(cursor.moveToNext())
-        }
-        cursor.close()
-        db.close()
-        return lista
-    }
+    // función para insertar pet obtenido por parámetro
     fun addPet(pet:Pet): Boolean{
         val data = ContentValues()
-//        val lista : MutableList<Int> = ArrayList()
-//        val db = this.readableDatabase
-//        val cursor: Cursor = db.rawQuery("SELECT id FROM pets;",null)
-//        if(cursor.moveToFirst()){
-//            do{
-//                lista.add( cursor.getInt(0))
-//            }while(cursor.moveToNext())
-//        }
-//        cursor.close()
-//        db.close()
-//        if(!lista.contains(pet.id)){
-//            data.put("id", pet.id)
-//        }
         data.put("nombre", pet.nombre)
         data.put("latNombre", pet.latName)
         data.put("enlace", pet.image)
@@ -155,6 +115,7 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
         db1.close()
         return true
     }
+    //función para actualizar al petpasandole el id y un map con valores
     fun updatePet(id:Int, valores: MutableMap<String, String>){
         val args = arrayOf(id.toString())
         val data = ContentValues()
@@ -166,20 +127,20 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
             }else{
                 data.put( item.key, item.value)
             }
-
         }
         val db = this.writableDatabase
         db.update("pets", data, "id=?", args)
         db.close()
     }
-
-    fun deletePet(id:Int):Int{
+    //borrado  de los registros, según el id y la tabla especificada
+    fun deleteItem(id:Int, tabla :String):Int{
         val args = arrayOf(id.toString())
         val db = this.writableDatabase
-        val result = db.delete("pets", "id =?",args)
+        val result = db.delete(tabla, "id =?",args)
         db.close()
         return result
     }
+    //obtengo la clase a partir de us id
     fun getClase(num:Int):Clase{
         var id =0
         var nombre=""
@@ -204,13 +165,6 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
         db.insert("clase", null, data)
         db.close()
     }
-    fun delClase(id:Int):Int{
-        val args = arrayOf(id.toString())
-        val db = this.writableDatabase
-        val result = db.delete("clase", "id =?",args)
-        db.close()
-        return result
-    }
 
     //método que devuelve el listado con todos los registros.
     fun allClasses(): MutableList<Clase>{
@@ -232,6 +186,7 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
         db.close()
         return lista
     }
+    //obtengo el pelaje según el id pasado
     fun getPelaje(num:Int):Pelaje{
         var id =0
         var nombre=""
@@ -256,13 +211,7 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
         db.insert("pelaje", null, data)
         db.close()
     }
-    fun delPelaje(id:Int):Int{
-        val args = arrayOf(id.toString())
-        val db = this.writableDatabase
-        val result = db.delete("pelaje", "id =?",args)
-        db.close()
-        return result
-    }
+        // método para obtener pelajes
     fun obtenerPelajes(): MutableList<Pelaje>{
         var id: Int
         var name: String

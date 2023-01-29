@@ -1,25 +1,18 @@
 package edu.andreaivanova.myfavouritespets
 
-import edu.andreaivanova.myfavouritespets.ListActivity
-import edu.andreaivanova.myfavouritespets.R
-
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
 import edu.andreaivanova.myfavouritespets.databinding.ActivityFormBinding
 import edu.andreaivanova.myfavouritespets.databinding.DialogLayoutBinding
 import edu.andreaivanova.myfavouritespets.model.Clase
@@ -182,7 +175,7 @@ class FormActivity : AppCompatActivity() {
                                 if (!result) {
                                     //elimino el objeto de la lista, luego de la BD y actualizo el adapter
                                     listaC.removeAt(selectedPosition)
-                                    val num = myUtils.deleteClase(this.context, cls.id)
+                                    val num = myUtils.delItem(this.context, cls.id, "clase")
                                     if (binding.tvClase.text.equals(cls.nombre)) {
                                         binding.tvClase.text = ""
                                     }
@@ -271,7 +264,7 @@ class FormActivity : AppCompatActivity() {
                                 if (!result) {
                                     //elimino el objeto de la lista, luego de la BD y actualizo el adapter
                                     listaP.removeAt(selectedPosition)
-                                    val num = myUtils.deletePelaje(this.context, cls.id)
+                                    val num = myUtils.delItem(this.context, cls.id, "pelaje")
                                     if (binding.tvPelo.text.equals(cls.nombre)) {
                                         binding.tvPelo.text = ""
                                     }
