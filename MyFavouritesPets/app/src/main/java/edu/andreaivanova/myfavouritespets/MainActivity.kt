@@ -68,13 +68,14 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
     override fun onItemClick(view:View, position:Int){
         pos=position
         var id = lista.get(position).id
+
+
         val myIntent = Intent(this, FormActivity::class.java).apply {
             // Se añade la información a pasar por clave-valor.
          putExtra( EXTRA_ID, id.toString())
         }
         // Se lanza la nueva activity con el Intent.
         startActivity(myIntent)
-        setUpRecyclerView()
     }
 
     //implemento el método de la interface, le paso el item y su posición en la lista

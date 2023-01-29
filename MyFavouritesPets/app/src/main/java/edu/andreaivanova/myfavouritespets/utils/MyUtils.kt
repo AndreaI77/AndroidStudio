@@ -4,6 +4,9 @@ package edu.andreaivanova.myfavouritespets.utils
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
+import androidx.appcompat.app.AlertDialog
+import com.google.android.material.snackbar.Snackbar
+import edu.andreaivanova.myfavouritespets.R
 import edu.andreaivanova.myfavouritespets.adapters.DBAdapter
 import edu.andreaivanova.myfavouritespets.model.Clase
 import edu.andreaivanova.myfavouritespets.model.Pelaje

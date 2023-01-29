@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import edu.andreaivanova.myfavouritespets.databinding.ActivityFormBinding
 import edu.andreaivanova.myfavouritespets.databinding.DialogLayoutBinding
 import edu.andreaivanova.myfavouritespets.model.Clase
@@ -49,15 +50,15 @@ class FormActivity : AppCompatActivity() {
         const val EXTRA_NAME = "id"
     }
     //resultado de obtener imagen de la cámara y lo cargo en el imageView
-    private var resultCaptura = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            result ->
-        val data: Intent? = result.data
-
-        if (result.resultCode == RESULT_OK) {
-            val thumbnail: Bitmap = data?.getParcelableExtra("data")!!
-            binding.imageView.setImageBitmap(thumbnail)
-        }
-    }
+//    private var resultCaptura = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+//            result ->
+//        val data: Intent? = result.data
+//
+//        if (result.resultCode == RESULT_OK) {
+//            val thumbnail: Bitmap = data?.getParcelableExtra("data")!!
+//            binding.imageView.setImageBitmap(thumbnail)
+//        }
+//    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,10 +79,10 @@ class FormActivity : AppCompatActivity() {
             binding.tvPelo.text= formViewModel.pelaje?.nombre
         }
         if(formViewModel.imagen != ""){
+            enlaceFoto= formViewModel.imagen
             BitmapFactory.decodeFile(enlaceFoto)
             binding.imageView.setImageBitmap(BitmapFactory.decodeFile(enlaceFoto))
         }
-
 
         // obtengo la rotación del teléfono
         val estado = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -115,6 +116,7 @@ class FormActivity : AppCompatActivity() {
                     binding.tilNombre.setText(item.nombre)
                     binding.txtLatName.setText(item.latName)
                     fav = item.favorite
+                    enlaceFoto = item.image
                     binding.imageView.setImageBitmap(BitmapFactory.decodeFile(item.image))
                     modificar = true
                 }
@@ -139,7 +141,7 @@ class FormActivity : AppCompatActivity() {
                     }
                 }
             }
-
+        // lanzo un intent para obtener clase
         binding.btnClase.setOnClickListener {
 
             val myIntent = Intent(this, ListActivity::class.java).apply {
@@ -165,7 +167,7 @@ class FormActivity : AppCompatActivity() {
                         }
                     }
                 }
-
+        //lanzo un intent para obtener pelaje
         binding.btnPelaje.setOnClickListener {
             val myIntent = Intent(this, PelajeActivity::class.java).apply {
                 putExtra(EXTRA_NAME, "pelaje")
@@ -194,7 +196,7 @@ class FormActivity : AppCompatActivity() {
 
         binding.btnImagen.setOnClickListener() {
                 // Se crea el fichero donde se guardará la imagen.
-            //photoFile = manageFiles().createImageFile(this)
+
                   photoFile = myUtils.createImageFile(this)
                 val fileProvider =
                     FileProvider.getUriForFile( // En base al provider creado en el Manifest.
@@ -268,7 +270,10 @@ class FormActivity : AppCompatActivity() {
                     valores["rating"]=rating.toString()
                     valores["favorite"]=fav.toString()
                     myUtils.updatePet(this,id!!.toInt(), valores)
-                    finish()
+
+
+                    val myIntent = Intent(this, MainActivity::class.java)
+                    startActivity(myIntent)
                 }else{
                     fav=0
                     var pet = Pet(0,nombre ,latNombre ,enlaceFoto, clase ,pelaje, rating, fav)
@@ -283,7 +288,8 @@ class FormActivity : AppCompatActivity() {
                         binding.tvClase.text=""
                         binding.tvPelo.text=""
                         binding.ratingBar.rating = 0.0f
-                        binding.imageView
+                        binding.imageView.setImageBitmap(null)
+                        enlaceFoto=""
                     }else{
                         Toast.makeText(
                             this,
@@ -295,7 +301,7 @@ class FormActivity : AppCompatActivity() {
             }
         }
         binding.ibAddClase.setOnClickListener {
-
+            //lanzo un alertDialog para añadir nuevo registro
             AlertDialog.Builder(this).apply {
                 // Se infla el layout personalizado del diálogo.
 
@@ -305,7 +311,7 @@ class FormActivity : AppCompatActivity() {
                 bindingCustom.tilRegistro.hint = getString(R.string.insertar_clase)
                 setPositiveButton(android.R.string.ok) { _, _ ->
                     if(bindingCustom.tvNuevoReg.text.isNullOrBlank()){
-                        bindingCustom.tilRegistro.error = getString(R.string.requerido)
+                        bindingCustom.tvNuevoReg.error = getString(R.string.requerido)
                     }else{
                         var name=bindingCustom.tvNuevoReg.text.toString()
 
@@ -349,7 +355,7 @@ class FormActivity : AppCompatActivity() {
                 bindingCustom.tilRegistro.hint = getString(R.string.insertar_pelaje)
                 setPositiveButton(android.R.string.ok) { _, _ ->
                     if(bindingCustom.tvNuevoReg.text.isNullOrBlank()){
-                        bindingCustom.tilRegistro.error = getString(R.string.requerido)
+                        bindingCustom.tvNuevoReg.error = getString(R.string.requerido)
                     }else{
                         var name=bindingCustom.tvNuevoReg.text.toString()
                         var lastId=0

@@ -24,7 +24,7 @@
     <string name="clase">Clase con id %d y nombre %s</string>
     <string name="requerido">Campo requerido</string>
     <string name="ratingError">Selecciona nivel de amorosidad:</string>
-    <string name="txt_noDelete">No se pudo eliminar el registro</string>
+    <string name="txt_noDelete">No se puede eliminar el registro</string>
     <string name="no_insert"> No se ha insertado ningún registro.</string>
     <string name="mi_ordenar">Ordenar por nombre</string>
     <string name="mi_todos">Ver todos</string>
@@ -37,4 +37,5 @@
     <string name = "logo">Logo mascotas</string>
     <string name = "fondo">Huellas de perro</string>
     <string name = "no_foto">Archivo no encontrado</string>
+
 </resources>

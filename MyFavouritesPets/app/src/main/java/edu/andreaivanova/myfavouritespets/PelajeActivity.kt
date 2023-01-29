@@ -12,12 +12,14 @@ import com.google.android.material.snackbar.Snackbar
 import edu.andreaivanova.myfavouritespets.adapters.RVListPAdapter
 import edu.andreaivanova.myfavouritespets.databinding.ActivityPelajeBinding
 import edu.andreaivanova.myfavouritespets.model.Pelaje
+import edu.andreaivanova.myfavouritespets.model.Pet
 import edu.andreaivanova.myfavouritespets.utils.MyUtils
 
 class PelajeActivity : AppCompatActivity(), RVListPAdapter.ItemLongClickListener, RVListPAdapter.ItemClickListener {
 
     private lateinit var binding: ActivityPelajeBinding
     private lateinit var lista:MutableList<Pelaje>
+    private lateinit var  listaP:MutableList<Pet>
     private lateinit var myUtils: MyUtils
     private lateinit var myAdapter:RVListPAdapter
     private lateinit var myRecycler: RecyclerView
@@ -30,10 +32,7 @@ class PelajeActivity : AppCompatActivity(), RVListPAdapter.ItemLongClickListener
         myUtils= MyUtils()
 
         var nombre=intent.getStringExtra(FormActivity.EXTRA_NAME)
-        if(nombre.equals("clase")){
-
-        }else if(nombre.equals("pelaje")){
-        }
+        listaP=myUtils.getPets(this)
 
         lista= myUtils.getPelaje(this)
         myAdapter = RVListPAdapter(lista)
@@ -64,33 +63,52 @@ class PelajeActivity : AppCompatActivity(), RVListPAdapter.ItemLongClickListener
     override fun onItemLongClick(view: View, position: Int) {
 
         //obtengo el registro de la lista correspondiente a la posición
-
+        var res= false
+        val pel = lista.get(position)
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.att)
         builder.setMessage(R.string.txt_msg)
         builder.setPositiveButton(android.R.string.ok){
                 dialog, which ->
-            val pel = lista.get(position)
-            if(binding.textView.text.equals(pel.nombre)){
-                binding.textView.text = ""
-            }
-            //elimino el objeto de la lista, luego de la BD y actualizo el adapter
-            lista.removeAt(position)
-            val num = myUtils.deletePelaje(this,pel.id)
 
-            myAdapter.notifyItemRemoved(position)
+            for(item in listaP){
+                if(item.pelo.id == pel.id){
+                    res= true
+                }
+            }
 
-            //si ya se han eliminado todos los Items de la vista, aviso con un textView
-            if(lista.size == 0){
-                binding.textView.text = getString(R.string.noItems)
-            } else {
-                binding.textView.text = ""
+            if(res==false){
+                if(binding.textView.text.equals(pel.nombre)){
+                    binding.textView.text = ""
+                }
+                //elimino el objeto de la lista, luego de la BD y actualizo el adapter
+                lista.removeAt(position)
+                val num = myUtils.deletePelaje(this,pel.id)
+
+                myAdapter.notifyItemRemoved(position)
+
+                //si ya se han eliminado todos los Items de la vista, aviso con un textView
+                if(lista.size == 0){
+                    binding.textView.text = getString(R.string.noItems)
+                } else {
+                    binding.textView.text = ""
+                }
+                //si no se ha eliminado el objeto, aviso con un Snackbar
+                if( num == 0){
+                    Snackbar.make( view, binding.root.resources.getString(R.string.txt_noDelete),
+                        Snackbar.LENGTH_LONG).show()
+                }
+            }else{
+                AlertDialog.Builder(this).apply {
+                    // Se asigna un título.
+                    setTitle(R.string.att)
+                    // Se asigna el cuerpo del mensaje.
+                    setMessage(R.string.txt_noDelete)
+                    // Se define el comportamiento de los botones.
+                    setPositiveButton(android.R.string.ok, null)
+                }.show() // Se muestra el AlertDialog.
             }
-            //si no se ha eliminado el objeto, aviso con un Snackbar
-            if( num == 0){
-                Snackbar.make( view, binding.root.resources.getString(R.string.txt_noDelete),
-                    Snackbar.LENGTH_LONG).show()
-            }
+
         }
         builder.setNegativeButton("No", null)
         builder.show()
