@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">MyFavouritePets</string>
+    <string name="image">Pet image</string>
+    <string name="bton_add">Añadir</string>
+    <string name="enlace">https://es.wikipedia.org/wiki/%s</string>
+    <string name="noItems">No hay registros</string>
+    <string name="nuevo_pet">Nueva mascota:</string>
+    <string name="nombre">Nombre</string>
+    <string name="latName">Nombre científico</string>
+    <string name="btn_clase">Elige clase:</string>
+    <string name="insertar_clase">Inserta clase:</string>
+    <string name="btn_pelo">Elige pelaje:</string>
+    <string name="insertar_pelaje">Inserta pelaje:</string>
+    <string name="rating">Amorosidad:</string>
+    <string name="pelaje">Pelaje: %s</string>
+    <string name="txt_rating">Rating</string>
+    <string name="btn_guardar">Guardar</string>
+    <string name="getImage">Obtener imagen</string>
+    <string name="favorito">Favorito</string>
+    <string name="Borrar">Borrar</string>
+    <string name="borrado">Se ha eliminado el registro %s</string>
+    <string name="sinBorrado">No se ha eliminado el registro.</string>
+    <string name="deshacer">Deshacer</string>
+    <string name="clase">Clase con id %d y nombre %s</string>
+    <string name="requerido">Campo requerido</string>
+    <string name="ratingError">Selecciona nivel de amorosidad:</string>
+    <string name="txt_noDelete">No se puede eliminar el registro</string>
+    <string name="no_insert"> No se ha insertado ningún registro.</string>
+    <string name="mi_ordenar">Ordenar por nombre</string>
+    <string name="mi_todos">Ver todos</string>
+    <string name="mi_amor">Ordenar por amorosidad</string>
+    <string name="mi_favoritos">Ver favoritos</string>
+    <string name="att"> Atención</string>
+    <string name="txt_msg">Quieres eliminar el registro?</string>
+    <string name = "titulo1">My Favorite</string>
+    <string name = "titulo2">Pets</string>
+    <string name = "logo">Logo mascotas</string>
+    <string name = "fondo">Huellas de perro</string>
+    <string name = "no_foto">Archivo no encontrado</string>
+
+</resources>

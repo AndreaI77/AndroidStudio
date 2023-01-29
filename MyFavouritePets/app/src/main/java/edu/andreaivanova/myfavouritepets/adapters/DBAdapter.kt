@@ -1,4 +1,4 @@
-package edu.andreaivanova.myfavouritespets.adapters
+package edu.andreaivanova.myfavouritepets.adapters
 
 import android.content.ContentValues
 import android.content.Context
@@ -7,9 +7,9 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import edu.andreaivanova.myfavouritespets.model.Clase
-import edu.andreaivanova.myfavouritespets.model.Pelaje
-import edu.andreaivanova.myfavouritespets.model.Pet
+import edu.andreaivanova.myfavouritepets.model.Clase
+import edu.andreaivanova.myfavouritepets.model.Pelaje
+import edu.andreaivanova.myfavouritepets.model.Pet
 
 class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
     SQLiteOpenHelper(context,DATABASE_NAME, factory, DATABASE_VERSION) {

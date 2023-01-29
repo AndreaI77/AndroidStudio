@@ -1,32 +1,27 @@
-package edu.andreaivanova.myfavouritespets
+package edu.andreaivanova.myfavouritepets
 
-import edu.andreaivanova.myfavouritespets.ListActivity
-import edu.andreaivanova.myfavouritespets.R
+import edu.andreaivanova.myfavouritepets.R
 
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
-import edu.andreaivanova.myfavouritespets.databinding.ActivityFormBinding
-import edu.andreaivanova.myfavouritespets.databinding.DialogLayoutBinding
-import edu.andreaivanova.myfavouritespets.model.Clase
-import edu.andreaivanova.myfavouritespets.model.FormViewModel
-import edu.andreaivanova.myfavouritespets.model.Pelaje
-import edu.andreaivanova.myfavouritespets.model.Pet
-import edu.andreaivanova.myfavouritespets.utils.MyUtils
+import edu.andreaivanova.myfavouritepets.databinding.ActivityFormBinding
+import edu.andreaivanova.myfavouritepets.databinding.DialogLayoutBinding
+import edu.andreaivanova.myfavouritepets.model.Clase
+import edu.andreaivanova.myfavouritepets.model.FormViewModel
+import edu.andreaivanova.myfavouritepets.model.Pelaje
+import edu.andreaivanova.myfavouritepets.model.Pet
+import edu.andreaivanova.myfavouritepets.utils.MyUtils
 import java.io.File
 
 class FormActivity : AppCompatActivity() {

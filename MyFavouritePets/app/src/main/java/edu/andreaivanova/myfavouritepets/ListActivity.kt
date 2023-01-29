@@ -1,26 +1,20 @@
-package edu.andreaivanova.myfavouritespets
+package edu.andreaivanova.myfavouritepets
 
 import android.app.Activity
-import android.content.DialogInterface
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import edu.andreaivanova.myfavouritespets.FormActivity
-import edu.andreaivanova.myfavouritespets.adapters.RVAdapter
-import edu.andreaivanova.myfavouritespets.adapters.RVListAdapter
-import edu.andreaivanova.myfavouritespets.databinding.ActivityFormBinding
-import edu.andreaivanova.myfavouritespets.databinding.ActivityListBinding
-import edu.andreaivanova.myfavouritespets.model.Clase
-import edu.andreaivanova.myfavouritespets.model.Pelaje
-import edu.andreaivanova.myfavouritespets.model.Pet
-import edu.andreaivanova.myfavouritespets.utils.MyUtils
+import edu.andreaivanova.myfavouritepets.adapters.RVListAdapter
+import edu.andreaivanova.myfavouritepets.databinding.ActivityListBinding
+import edu.andreaivanova.myfavouritepets.model.Clase
+import edu.andreaivanova.myfavouritepets.model.Pet
+import edu.andreaivanova.myfavouritepets.utils.MyUtils
 
 class ListActivity : AppCompatActivity(), RVListAdapter.ItemLongClickListener, RVListAdapter.ItemClickListener {
     private lateinit var binding: ActivityListBinding

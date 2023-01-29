@@ -1,16 +1,12 @@
-package edu.andreaivanova.myfavouritespets.utils
+package edu.andreaivanova.myfavouritepets.utils
 
 
 import android.content.Context
-import android.net.Uri
 import android.os.Environment
-import androidx.appcompat.app.AlertDialog
-import com.google.android.material.snackbar.Snackbar
-import edu.andreaivanova.myfavouritespets.R
-import edu.andreaivanova.myfavouritespets.adapters.DBAdapter
-import edu.andreaivanova.myfavouritespets.model.Clase
-import edu.andreaivanova.myfavouritespets.model.Pelaje
-import edu.andreaivanova.myfavouritespets.model.Pet
+import edu.andreaivanova.myfavouritepets.adapters.DBAdapter
+import edu.andreaivanova.myfavouritepets.model.Clase
+import edu.andreaivanova.myfavouritepets.model.Pelaje
+import edu.andreaivanova.myfavouritepets.model.Pet
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*

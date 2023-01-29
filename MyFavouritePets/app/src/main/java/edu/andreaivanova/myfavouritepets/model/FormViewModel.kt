@@ -1,4 +1,4 @@
-package edu.andreaivanova.myfavouritespets.model
+package edu.andreaivanova.myfavouritepets.model
 
 import androidx.lifecycle.ViewModel
 

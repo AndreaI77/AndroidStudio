@@ -1,22 +1,21 @@
-package edu.andreaivanova.myfavouritespets
+package edu.andreaivanova.myfavouritepets
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import edu.andreaivanova.myfavouritespets.FormActivity
-import edu.andreaivanova.myfavouritespets.adapters.RVAdapter
+import edu.andreaivanova.myfavouritepets.adapters.RVAdapter
+
+import edu.andreaivanova.myfavouritepets.model.Pet
+import edu.andreaivanova.myfavouritepets.utils.MyUtils
+import edu.andreaivanova.myfavouritespets.R
 import edu.andreaivanova.myfavouritespets.databinding.ActivityMainBinding
-import edu.andreaivanova.myfavouritespets.model.Pet
-import edu.andreaivanova.myfavouritespets.utils.MyUtils
 
 
 class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdapter.ItemClickListener  {
