@@ -127,215 +127,192 @@ class FormActivity : AppCompatActivity() {
             }
         }
 
-        //registro el resultado del intent lanzado por el botón de la clase
-        var resultadoActivity =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                // Se recupera la información adicional.
-                val data: Intent? = result.data
+        // creo un Dialog  para obtener clase
+        binding.btnClase.setOnClickListener {
+            var result= false
+            //si la lista está vacía, aviso con alertdialog
+            if(listaC.size == 0){
+                androidx.appcompat.app.AlertDialog.Builder(this).apply {
+                    setMessage(R.string.noItems)
+                    setPositiveButton(android.R.string.ok, null)
+                }.show() // Se muestra el AlertDialog.
+            }else {
+                //creo un array de los nombres de las clases
+                var listaN: MutableList<String> = ArrayList()
+                for (item in listaC) {
+                    listaN.add(item.nombre)
+                }
+                var miArray: Array<String> = listaN.toTypedArray()
 
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val valor = data?.getIntExtra("claseId", 0)
-                    for (item in listaC) {
-                        if (item.id == valor) {
-                            clase = item
-                            formViewModel.clase = item
-                            binding.tvClase.text = item.nombre
+                //creo el Alertdialog de selección simple
+                AlertDialog.Builder(this).apply {
+                    selectedPosition = -1
+                    setTitle(R.string.btn_clase)
+                    setSingleChoiceItems(miArray, -1) { _, which ->
+                        selectedPosition = which
+                    }
+                    //al seleccionar ok, asigno la clase,
+                    // actualizo el viewModel e inserto texto en los
+                    setPositiveButton(android.R.string.ok) { dialog, _ ->
+                        if (selectedPosition != -1) {
+                            clase = listaC.get(selectedPosition)
+                            formViewModel.clase = clase
+                            binding.tvClase.text = clase.nombre
                             binding.tvClase.setTextColor(getResources().getColor(R.color.black))
                         }
                     }
-                }
-            }
-        // lanzo un intent para obtener clase
-        binding.btnClase.setOnClickListener {
-            var result= false
+                    // si decide eliminar, obtengo la clase de la lista y pido confirmación
+                    setNegativeButton("eliminar") { dialog, _ ->
 
-            var listaN: MutableList<String> = ArrayList()
-            for(item in listaC){
-                listaN.add(item.nombre)
-            }
-            var miArray:Array<String> = listaN.toTypedArray()
+                        if (selectedPosition != -1) {
+                            var cls = listaC.get(selectedPosition)
+                            val builder = androidx.appcompat.app.AlertDialog.Builder(this.context)
+                            builder.setTitle(R.string.att)
+                            builder.setMessage(R.string.txt_msg)
+                            builder.setPositiveButton("Sí") { dialog, which ->
 
-            AlertDialog.Builder(this).apply {
-                selectedPosition = -1
-                setTitle(R.string.btn_clase)
-                setSingleChoiceItems(miArray, -1) { _, which ->
-                    selectedPosition = which
-                }
-
-                setPositiveButton(android.R.string.ok) { dialog, _ ->
-                    if (selectedPosition != -1) {
-                        clase = listaC.get(selectedPosition)
-                        formViewModel.clase = clase
-                        binding.tvClase.text = clase.nombre
-                        binding.tvClase.setTextColor(getResources().getColor(R.color.black))
-                    }
-                }
-                setNegativeButton("eliminar") { dialog, _ ->
-
-                    if (selectedPosition != -1) {
-                        var cls = listaC.get(selectedPosition)
-                        val builder = androidx.appcompat.app.AlertDialog.Builder(this.context)
-                        builder.setTitle(R.string.att)
-                        builder.setMessage(R.string.txt_msg)
-                        builder.setPositiveButton(android.R.string.ok){
-                                dialog, which ->
-                            for(item in lista){
-                                if(item.clase.id == cls.id){
-                                    result= true
+                                // en caso de confirmación,
+                                // compruebo si alguno de los pets contiene esta clase
+                                for (item in lista) {
+                                    if (item.clase.id == cls.id) {
+                                        result = true
+                                    }
                                 }
-                            }
-                            if(!result){
-                                //elimino el objeto de la lista, luego de la BD y actualizo el adapter
-                                listaC.removeAt(selectedPosition)
-                                val num = myUtils.deleteClase(this.context, cls.id)
-                                if (binding.tvClase.text.equals(cls.nombre)) {
-                                    binding.tvClase.text = ""
-                                }
-                                //si ya se han eliminado todos los Items de la vista, aviso con un textView
-                                if (lista.size == 0) {
-                                    binding.tvClase.text = getString(R.string.noItems)
+                                //si no la contiene
+                                if (!result) {
+                                    //elimino el objeto de la lista, luego de la BD y actualizo el adapter
+                                    listaC.removeAt(selectedPosition)
+                                    val num = myUtils.deleteClase(this.context, cls.id)
+                                    if (binding.tvClase.text.equals(cls.nombre)) {
+                                        binding.tvClase.text = ""
+                                    }
+                                    //si ya se han eliminado todos los Items de la vista, aviso con un textView
+                                    if (listaC.size == 0) {
+                                        binding.tvClase.text = getString(R.string.noItems)
+                                    } else {
+                                        binding.tvClase.text = ""
+                                    }
+                                    //si no se ha eliminado el objeto, aviso con un toast
+                                    if (num == 0) {
+                                        Toast.makeText(
+                                            this.context,
+                                            binding.root.resources.getString(R.string.txt_noDelete),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
                                 } else {
-                                    binding.tvClase.text = ""
+                                    // si alguno de los pets contiene la clase, informo de la situación y no elimino el registro.
+                                    androidx.appcompat.app.AlertDialog.Builder(this.context).apply {
+                                        // Se asigna un título.
+                                        setTitle(R.string.att)
+                                        setMessage(R.string.txt_noDelete)
+                                        setPositiveButton(android.R.string.ok, null)
+                                    }.show() // Se muestra el AlertDialog.
                                 }
-                                //si no se ha eliminado el objeto, aviso con un toast
-                                if (num == 0) {
-                                    Toast.makeText(
-                                        this.context,
-                                        binding.root.resources.getString(R.string.txt_noDelete),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }else{
-                            androidx.appcompat.app.AlertDialog.Builder(this.context).apply {
-                                // Se asigna un título.
-                                setTitle(R.string.att)
-                                // Se asigna el cuerpo del mensaje.
-                                setMessage(R.string.txt_noDelete)
-                                // Se define el comportamiento de los botones.
-                                setPositiveButton(android.R.string.ok, null)
-                            }.show() // Se muestra el AlertDialog.
-                        }
-                        }
-                        builder.setNegativeButton("No", null)
-                        builder.show()
-                    }
-                }
-                setNeutralButton(android.R.string.cancel, null)
-            }.show()
-
-            val myIntent = Intent(this, ListActivity::class.java).apply {
-                putExtra(EXTRA_NAME, "clase")
-            }
-            //resultadoActivity.launch(myIntent)
-        }
-        //registro el resultado del intent lanzado por el botón del pelaje
-        var resultadoActivity2 =
-                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                    // Se recupera la información adicional.
-                    val data: Intent? = result.data
-
-                    if (result.resultCode == Activity.RESULT_OK) {
-                        val valor = data?.getIntExtra("pelajeId", 0)
-                        for (item in listaP) {
-                            if (item.id == valor) {
-                                pelaje = item
-                                formViewModel.pelaje=item
-                                binding.tvPelo.text = item.nombre
-                                binding.tvPelo.setTextColor(getResources().getColor(R.color.black))
                             }
+                            builder.setNegativeButton("No", null)
+                            builder.show()
                         }
                     }
-                }
-        //lanzo un intent para obtener pelaje
+                    //botón para cancelar
+                    setNeutralButton(android.R.string.cancel, null)
+                }.show()
+            }
+        }
+
+        //botón para obtener el tipo de pelo
         binding.btnPelaje.setOnClickListener {
             var result= false
-
-            var listaN: MutableList<String> = ArrayList()
-            for(item in listaP){
-                listaN.add(item.nombre)
-            }
-            var miArray:Array<String> = listaN.toTypedArray()
-
-            AlertDialog.Builder(this).apply {
-                selectedPosition = -1
-                setTitle(R.string.btn_pelo)
-                setSingleChoiceItems(miArray, -1) { _, which ->
-                    selectedPosition = which
+            //si la lista está vacía, aviso con un dialog
+            if(listaP.size == 0){
+                androidx.appcompat.app.AlertDialog.Builder(this).apply {
+                    setMessage(R.string.noItems)
+                    setPositiveButton(android.R.string.ok, null)
+                }.show()
+            }else {
+                //creo un array con los nombres de pelaje
+                var listaN: MutableList<String> = ArrayList()
+                for (item in listaP) {
+                    listaN.add(item.nombre)
                 }
-
-                setPositiveButton(android.R.string.ok) { dialog, _ ->
-                    if (selectedPosition != -1) {
-                        pelaje = listaP.get(selectedPosition)
-                        formViewModel.pelaje = pelaje
-                        binding.tvPelo.text = pelaje.nombre
-                        binding.tvPelo.setTextColor(getResources().getColor(R.color.grey))
+                var miArray: Array<String> = listaN.toTypedArray()
+                //lanzo un AlertDialgo con la lista de opciones
+                AlertDialog.Builder(this).apply {
+                    selectedPosition = -1
+                    setTitle(R.string.btn_pelo)
+                    setSingleChoiceItems(miArray, -1) { _, which ->
+                        selectedPosition = which
                     }
-                }
-                setNegativeButton("eliminar") { dialog, _ ->
-
-                    if (selectedPosition != -1) {
-                        var cls = listaP.get(selectedPosition)
-                        val builder = androidx.appcompat.app.AlertDialog.Builder(this.context)
-                        builder.setTitle(R.string.att)
-                        builder.setMessage(R.string.txt_msg)
-                        builder.setPositiveButton(android.R.string.ok){
-                                dialog, which ->
-                            for(item in lista){
-                                if(item.pelo.id == cls.id){
-                                    result= true
-                                }
-                            }
-                            if(!result){
-                                //elimino el objeto de la lista, luego de la BD y actualizo el adapter
-                                listaP.removeAt(selectedPosition)
-                                val num = myUtils.deletePelaje(this.context, cls.id)
-                                if (binding.tvPelo.text.equals(cls.nombre)) {
-                                    binding.tvPelo.text = ""
-                                }
-                                //si ya se han eliminado todos los Items de la vista, aviso con un textView
-                                if (lista.size == 0) {
-                                    binding.tvPelo.text = getString(R.string.noItems)
-                                } else {
-                                    binding.tvPelo.text = ""
-                                }
-                                //si no se ha eliminado el objeto, aviso con un toast
-                                if (num == 0) {
-                                    Toast.makeText(
-                                        this.context,
-                                        binding.root.resources.getString(R.string.txt_noDelete),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }else{
-                                androidx.appcompat.app.AlertDialog.Builder(this.context).apply {
-                                    // Se asigna un título.
-                                    setTitle(R.string.att)
-                                    // Se asigna el cuerpo del mensaje.
-                                    setMessage(R.string.txt_noDelete)
-                                    // Se define el comportamiento de los botones.
-                                    setPositiveButton(android.R.string.ok, null)
-                                }.show() // Se muestra el AlertDialog.
-                            }
+                    // en caso de ok asigno el pelaje, actualizo el viewModel y los textview
+                    setPositiveButton(android.R.string.ok) { dialog, _ ->
+                        if (selectedPosition != -1) {
+                            pelaje = listaP.get(selectedPosition)
+                            formViewModel.pelaje = pelaje
+                            binding.tvPelo.text = pelaje.nombre
+                            binding.tvPelo.setTextColor(getResources().getColor(R.color.grey))
                         }
-                        builder.setNegativeButton("No", null)
-                        builder.show()
                     }
-                }
-                setNeutralButton(android.R.string.cancel, null)
-            }.show()
+                    //si decide eliminar, obtengo el pelaje y pido confirmación
+                    setNegativeButton("eliminar") { dialog, _ ->
+                        if (selectedPosition != -1) {
+                            var cls = listaP.get(selectedPosition)
+                            val builder = androidx.appcompat.app.AlertDialog.Builder(this.context)
+                            builder.setTitle(R.string.att)
+                            builder.setMessage(R.string.txt_msg)
 
-            val myIntent = Intent(this, PelajeActivity::class.java).apply {
-                putExtra(EXTRA_NAME, "pelaje")
+                            //si confirma la eliminación compruebo si exite en la lista de los pets
+                            builder.setPositiveButton(android.R.string.ok) { dialog, which ->
+                                for (item in lista) {
+                                    if (item.pelo.id == cls.id) {
+                                        result = true
+                                    }
+                                }
+                                //si no existe
+                                if (!result) {
+                                    //elimino el objeto de la lista, luego de la BD y actualizo el adapter
+                                    listaP.removeAt(selectedPosition)
+                                    val num = myUtils.deletePelaje(this.context, cls.id)
+                                    if (binding.tvPelo.text.equals(cls.nombre)) {
+                                        binding.tvPelo.text = ""
+                                    }
+                                    //si no se ha eliminado el objeto, aviso con un toast
+                                    if (num == 0) {
+                                        Toast.makeText(
+                                            this.context,
+                                            binding.root.resources.getString(R.string.txt_noDelete),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                } else {
+                                    //aviso si no se puede eliminar el registro
+                                    androidx.appcompat.app.AlertDialog.Builder(this.context).apply {
+                                        // Se asigna un título.
+                                        setTitle(R.string.att)
+                                        // Se asigna el cuerpo del mensaje.
+                                        setMessage(R.string.txt_noDelete)
+                                        // Se define el comportamiento de los botones.
+                                        setPositiveButton(android.R.string.ok, null)
+                                    }.show() // Se muestra el AlertDialog.
+                                }
+                            }
+                            builder.setNegativeButton("No", null)
+                            builder.show()
+                        }
+                    }
+                    setNeutralButton(android.R.string.cancel, null)
+                }.show()
             }
-            //resultadoActivity2.launch(myIntent)
         }
 
+        //registro para el resultado de la camara
         var resultTakePicture =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
+                    //obtengo el enlace, lo guardo en una variable y actualizo el viewModel
                     enlaceFoto=Uri.fromFile(photoFile).toString()
                     formViewModel.imagen=enlaceFoto
+                    //obtengo el código de la imagen y si está vacío, aviso con un toast
                     val bMap = BitmapFactory.decodeFile(enlaceFoto)
                     if(bMap == null){
                         Toast.makeText(
@@ -344,6 +321,7 @@ class FormActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                     }else{
+                        //cargo la imagen en el imageview
                         binding.imageView.setImageBitmap(bMap)
                         photoFile = null
                     }
@@ -367,6 +345,8 @@ class FormActivity : AppCompatActivity() {
                         MediaStore.EXTRA_OUTPUT, fileProvider
                     )
                 }
+
+            //lanzo el intent
             resultTakePicture.launch(intent)
 
                 //intent para cargar foto desde la cámara en el imageView
@@ -377,6 +357,7 @@ class FormActivity : AppCompatActivity() {
             }
 
         binding.btnGuardar.setOnClickListener() {
+            //compruebo todos los campos obligatorios
             var nombre = ""
             var latNombre = ""
             var rating = 0.0f
@@ -415,6 +396,7 @@ class FormActivity : AppCompatActivity() {
             }
 
             if(result){
+                //si es para modificar un registro existente, creo el map y lo actualizo
                 if(modificar){
 
                     var valores = mutableMapOf<String,String>()
@@ -427,13 +409,15 @@ class FormActivity : AppCompatActivity() {
                     valores["favorite"]=fav.toString()
                     myUtils.updatePet(this,id!!.toInt(), valores)
 
-
+                    //vuelvo a la pantalla principal
                     val myIntent = Intent(this, MainActivity::class.java)
                     startActivity(myIntent)
                 }else{
+                    //si no es para modificar, creo pet y lo guardo en la BD
                     fav=0
                     var pet = Pet(0,nombre ,latNombre ,enlaceFoto, clase ,pelaje, rating, fav)
                     if(myUtils.savePet(this,pet)){
+                        //confirmo la inserción y borro el formulario
                         Toast.makeText(
                             this,
                             "Registro insertado: ${ pet.nombre}",
@@ -462,27 +446,33 @@ class FormActivity : AppCompatActivity() {
                 // Se infla el layout personalizado del diálogo.
 
                 val bindingCustom = DialogLayoutBinding.inflate(layoutInflater)
-
+                //establezco la vista y asigno el hint al campo
                 setView(bindingCustom.root)
                 bindingCustom.tilRegistro.hint = getString(R.string.insertar_clase)
+
                 setPositiveButton(android.R.string.ok) { _, _ ->
+                    //compruebo el campo
                     if(bindingCustom.tvNuevoReg.text.isNullOrBlank()){
                         bindingCustom.tvNuevoReg.error = getString(R.string.requerido)
                     }else{
+                        //inserto el texto en el campo
                         var name=bindingCustom.tvNuevoReg.text.toString()
 
+                        //busco el último id
                         var lastId= 0
                         if(listaC.size >0){
                             lastId=listaC.last().id
                         }
-
+                        //creo nueva clase, la añado a la lista,
+                        // actualizo viewModel e inserto la clase ne la BD
                         clase = Clase(lastId+1,name)
                         formViewModel.clase=clase
                         listaC.add(clase)
                         myUtils.saveClase(this@FormActivity,clase)
 
+                        //inserto texto
                         binding.tvClase!!.text=name
-                        binding.tvClase.setTextColor(getResources().getColor(R.color.black))
+                        binding.tvClase.setTextColor(getResources().getColor(R.color.grey))
                         Toast.makeText(
                             context,
                             "Registro insertado: ${bindingCustom.tvNuevoReg.text}",
@@ -492,6 +482,7 @@ class FormActivity : AppCompatActivity() {
 
                 }
                 setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                    //aviso de que no se ha insertado nada
                     Toast.makeText(
                         context,
                         getString(R.string.no_insert),
@@ -502,6 +493,7 @@ class FormActivity : AppCompatActivity() {
             }.show()
         }
         binding.ibAddPelaje.setOnClickListener {
+            //lanzo un alert dialog para insertar el campo.
             AlertDialog.Builder(this).apply {
                 // Se infla el layout personalizado del diálogo.
 
@@ -509,7 +501,9 @@ class FormActivity : AppCompatActivity() {
 
                 setView(bindingCustom.root)
                 bindingCustom.tilRegistro.hint = getString(R.string.insertar_pelaje)
+
                 setPositiveButton(android.R.string.ok) { _, _ ->
+                    //compruebo el campo
                     if(bindingCustom.tvNuevoReg.text.isNullOrBlank()){
                         bindingCustom.tvNuevoReg.error = getString(R.string.requerido)
                     }else{
@@ -532,6 +526,7 @@ class FormActivity : AppCompatActivity() {
                     }
                 }
                 setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                    //aviso de que no se ha insertado nada
                     Toast.makeText(
                         context,
                         getString(R.string.no_insert),
@@ -541,26 +536,6 @@ class FormActivity : AppCompatActivity() {
                 }
             }.show()
         }
-    }
-    private fun recuperarDatos(){
-        //relleno los datos desde viewModel
-        formViewModel = ViewModelProvider(this).get(FormViewModel::class.java)
-        binding.tilNombre.setText(formViewModel.nombre)
-        binding.txtLatName.setText(formViewModel.latName)
-        binding.ratingBar.rating = formViewModel.rating
-
-        if(formViewModel.clase != null){
-            binding.tvClase.text= formViewModel.clase?.nombre
-        }
-        if(formViewModel.pelaje != null){
-            binding.tvPelo.text= formViewModel.pelaje?.nombre
-        }
-        if(formViewModel.imagen != ""){
-            enlaceFoto= formViewModel.imagen
-            BitmapFactory.decodeFile(enlaceFoto)
-            binding.imageView.setImageBitmap(BitmapFactory.decodeFile(enlaceFoto))
-        }
-
     }
 
 }
