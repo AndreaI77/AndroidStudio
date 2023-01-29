@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:backgroundTint="@color/purple_500"
+        android:backgroundTint="@color/primaryColor"
         android:contentDescription="@string/bton_add"
         app:layout_constraintBottom_toBottomOf="@+id/tv_clase"
         app:layout_constraintEnd_toEndOf="@id/til_latName"
@@ -55,18 +55,20 @@
         app:layout_constraintTop_toTopOf="@+id/tv_clase"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@android:drawable/ic_input_add"
-        tools:ignore="DuplicateSpeakableTextCheck" />
+        tools:ignore="DuplicateSpeakableTextCheck"
+        app:tint="@color/primaryTextColor" />
 
     <ImageButton
         android:id="@+id/ib_addPelaje"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/purple_500"
+        android:backgroundTint="@color/primaryColor"
         android:contentDescription="@string/bton_add"
         app:layout_constraintBottom_toBottomOf="@+id/tv_pelo"
         app:layout_constraintEnd_toEndOf="@id/ib_addClase"
         app:layout_constraintTop_toTopOf="@+id/tv_pelo"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:tint="@color/primaryTextColor" />
 
     <TextView
         android:id="@+id/tv_nivelRating"

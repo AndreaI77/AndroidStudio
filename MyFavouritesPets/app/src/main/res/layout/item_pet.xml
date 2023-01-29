@@ -24,9 +24,7 @@
             android:layout_height="152dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:contentDescription="@string/image"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/ic_menu_camera"
@@ -62,9 +60,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@id/iv_imagen"
+            android:layout_marginTop="4dp"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/tv_latName"
             tools:text="clase" />
 
@@ -81,7 +79,9 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_imagen"
             tools:ignore="TextContrastCheck"
             tools:text="enlace" />
 
@@ -89,19 +89,20 @@
             android:id="@+id/tv_pelaje"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_latName"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/tv_class"
             tools:text="pelaje" />
 
         <RatingBar
             android:id="@+id/rb_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="-5dp"
             android:layout_marginEnd="10dp"
+            android:elevation="6dp"
             android:isIndicator="true"
             android:numStars="5"
             android:paddingTop="0dp"
@@ -109,9 +110,9 @@
             android:scaleY="0.5"
             android:stepSize="1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.23"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/iv_imagen"
-            app:layout_constraintTop_toBottomOf="@+id/tv_latName" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_pelaje" />
 
         <ImageButton
             android:id="@+id/imageButton"
@@ -127,6 +128,28 @@
             app:srcCompat="@drawable/favorite_48px_1_"
             app:tint="#838080"
             tools:ignore="TouchTargetSizeCheck" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/cls"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/iv_imagen"
+            app:layout_constraintTop_toBottomOf="@+id/tv_latName" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/pelo"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/iv_imagen"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

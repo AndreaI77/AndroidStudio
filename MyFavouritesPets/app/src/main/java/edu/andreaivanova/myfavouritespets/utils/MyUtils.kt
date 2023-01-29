@@ -3,6 +3,7 @@ package edu.andreaivanova.myfavouritespets.utils
 
 import android.content.Context
 import android.os.Environment
+import edu.andreaivanova.myfavouritespets.R
 import edu.andreaivanova.myfavouritespets.adapters.DBAdapter
 import edu.andreaivanova.myfavouritespets.model.Clase
 import edu.andreaivanova.myfavouritespets.model.Pelaje
@@ -64,5 +65,15 @@ class MyUtils {
         )
         return File.createTempFile("IMG_$timeStamp", ".jpg", directoryStorage)
     }
-
+    fun getSimpleDialog(context:Context, title:Int, msg:Int){
+        androidx.appcompat.app.AlertDialog.Builder(context).apply {
+            // Se asigna un título.
+            if(title != -1){
+                setTitle(title)
+            }
+            setMessage(msg)
+            setPositiveButton(android.R.string.ok, null)
+        }.show()
+    // Se muestra el AlertDialog.
+    }
 }

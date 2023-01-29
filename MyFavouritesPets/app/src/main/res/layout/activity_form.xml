@@ -71,12 +71,13 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_weight="1"
-        android:backgroundTint="@color/purple_500"
+        android:backgroundTint="@color/primaryColor"
         android:contentDescription="@string/bton_add"
         app:layout_constraintBottom_toBottomOf="@+id/tv_clase"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_clase"
         app:srcCompat="@android:drawable/ic_input_add"
+        app:tint="@color/primaryTextColor"
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <TextView
@@ -102,12 +103,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/purple_500"
+        android:backgroundTint="@color/primaryColor"
         android:contentDescription="@string/bton_add"
         app:layout_constraintBottom_toBottomOf="@+id/tv_pelo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_pelo"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:tint="@color/primaryTextColor" />
 
     <RatingBar
         android:id="@+id/ratingBar"

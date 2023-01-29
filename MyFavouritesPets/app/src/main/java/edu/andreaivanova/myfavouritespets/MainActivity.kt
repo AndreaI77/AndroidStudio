@@ -1,18 +1,15 @@
 package edu.andreaivanova.myfavouritespets
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import edu.andreaivanova.myfavouritespets.FormActivity
 import edu.andreaivanova.myfavouritespets.adapters.RVAdapter
 import edu.andreaivanova.myfavouritespets.databinding.ActivityMainBinding
 import edu.andreaivanova.myfavouritespets.model.Pet
@@ -70,7 +67,7 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
         // le paso al formulario su id para modificarlo
     override fun onItemClick(view:View, position:Int){
         pos=position
-        var id = lista.get(position).id
+        val id = lista.get(position).id
 
         val myIntent = Intent(this, FormActivity::class.java).apply {
             // Se añade la información a pasar por clave-valor.
@@ -156,8 +153,9 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
             }
             R.id.mi_todos ->{
                 // obtengo todos los datos y recargo el recycler
-                //myRecycler.invalidate()
+
                lista= myUtils.getPets(this)
+                myRecycler.invalidate()
                myAdapter.notifyDataSetChanged()
                 true
             }

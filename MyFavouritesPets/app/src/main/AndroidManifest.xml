@@ -36,26 +36,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity
-            android:name=".PelajeActivity"
-            android:exported="false"
-            android:label="Elige una opción:"
-            android:parentActivityName=".FormActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".ListActivity"
-            android:exported="false"
-            android:label="Elige una opción:"
-            android:parentActivityName=".FormActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
