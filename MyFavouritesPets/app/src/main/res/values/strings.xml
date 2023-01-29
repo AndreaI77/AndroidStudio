@@ -34,4 +34,7 @@
     <string name="txt_msg">Quieres eliminar el registro?</string>
     <string name = "titulo1">My Favorite</string>
     <string name = "titulo2">Pets</string>
+    <string name = "logo">Logo mascotas</string>
+    <string name = "fondo">Huellas de perro</string>
+    <string name = "no_foto">Archivo no encontrado</string>
 </resources>

@@ -74,9 +74,7 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
         }
         // Se lanza la nueva activity con el Intent.
         startActivity(myIntent)
-        lista= myUtils.getPets(this)
-        myAdapter = RVAdapter(lista)
-        myAdapter.notifyDataSetChanged()
+        setUpRecyclerView()
     }
 
     //implemento el método de la interface, le paso el item y su posición en la lista
@@ -156,4 +154,5 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
             else -> super.onOptionsItemSelected(item)
        }
     }
+
 }

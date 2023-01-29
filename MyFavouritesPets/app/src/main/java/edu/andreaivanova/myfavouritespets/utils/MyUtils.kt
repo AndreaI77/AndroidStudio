@@ -2,6 +2,7 @@ package edu.andreaivanova.myfavouritespets.utils
 
 
 import android.content.Context
+import android.net.Uri
 import android.os.Environment
 import edu.andreaivanova.myfavouritespets.adapters.DBAdapter
 import edu.andreaivanova.myfavouritespets.model.Clase

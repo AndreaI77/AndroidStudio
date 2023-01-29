@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F1D2F6"
     app:layout_constraintGuide_percent="0.5"
     tools:context=".SplashScreenActivity">
 
@@ -14,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
+        android:contentDescription="@string/logo"
         app:layout_constraintBottom_toTopOf="@+id/gl_1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,7 @@
         android:text="@string/titulo1"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@color/purple_500"
-        android:textSize="48sp"
+        android:textSize="60sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -58,8 +58,21 @@
         android:text="@string/titulo2"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@color/purple_500"
-        android:textSize="48sp"
+        android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/gl_1" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/fondo"
+        android:translationZ="-1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/fondo5" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

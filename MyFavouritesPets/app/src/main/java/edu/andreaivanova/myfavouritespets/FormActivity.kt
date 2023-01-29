@@ -7,9 +7,12 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
@@ -27,29 +30,42 @@ import java.io.File
 
 class FormActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFormBinding
-    private lateinit var  listaP:MutableList<Pelaje>
-    private lateinit var  listaC:MutableList<Clase>
-    private lateinit var lista:MutableList<Pet>
-    private lateinit var myUtils:MyUtils
+    private lateinit var listaP: MutableList<Pelaje>
+    private lateinit var listaC: MutableList<Clase>
+    private lateinit var lista: MutableList<Pet>
+    private lateinit var myUtils: MyUtils
     private var photoFile: File? = null
-    private lateinit var clase :Clase
-    private lateinit var pelaje : Pelaje
-    private lateinit var formViewModel : FormViewModel
-    private var modificar=false
+    private lateinit var clase: Clase
+    private lateinit var pelaje: Pelaje
+    private lateinit var formViewModel: FormViewModel
+    private var modificar = false
     private var fav = 0
-    private var id:String? =null
+    private var id: String? = null
+    private var enlaceFoto = ""
 
 
-    companion object{
+    companion object {
         const val TAG_APP = "MyFavouritesPets"
         const val EXTRA_NAME = "id"
     }
+    //resultado de obtener imagen de la cámara y lo cargo en el imageView
+    private var resultCaptura = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            result ->
+        val data: Intent? = result.data
+
+        if (result.resultCode == RESULT_OK) {
+            val thumbnail: Bitmap = data?.getParcelableExtra("data")!!
+            binding.imageView.setImageBitmap(thumbnail)
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //relleno los datos desde viewModel
         formViewModel = ViewModelProvider(this).get(FormViewModel::class.java)
         binding.tilNombre.setText(formViewModel.nombre)
         binding.txtLatName.setText(formViewModel.latName)
@@ -61,9 +77,12 @@ class FormActivity : AppCompatActivity() {
         if(formViewModel.pelaje != null){
             binding.tvPelo.text= formViewModel.pelaje?.nombre
         }
+        if(formViewModel.imagen != ""){
+            BitmapFactory.decodeFile(enlaceFoto)
+            binding.imageView.setImageBitmap(BitmapFactory.decodeFile(enlaceFoto))
+        }
 
-//        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-//        imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+
         // obtengo la rotación del teléfono
         val estado = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             this.display?.rotation
@@ -81,7 +100,8 @@ class FormActivity : AppCompatActivity() {
         listaP= myUtils.getPelaje(this)
         lista=myUtils.getPets(this)
 
-
+        //esto es el id del item pasado por intent para modificar.
+        // LLena los datos del formulario
         id=intent.getStringExtra(MainActivity.EXTRA_ID)
         if(id != null){
 
@@ -95,74 +115,91 @@ class FormActivity : AppCompatActivity() {
                     binding.tilNombre.setText(item.nombre)
                     binding.txtLatName.setText(item.latName)
                     fav = item.favorite
-//                    binding.imageView
+                    binding.imageView.setImageBitmap(BitmapFactory.decodeFile(item.image))
                     modificar = true
                 }
             }
         }
 
-        var resultadoActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            // Se recupera la información adicional.
-            val data: Intent? = result.data
+        //registro el resultado del intent lanzado por el botón de la clase
+        var resultadoActivity =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                // Se recupera la información adicional.
+                val data: Intent? = result.data
 
-            if (result.resultCode == Activity.RESULT_OK) {
-                val valor = data?.getIntExtra("claseId", 0)
-                for (item in listaC) {
-                    if (item.id == valor) {
-                        clase = item
-                        formViewModel.clase = item
-                        binding.tvClase.text = item.nombre
-                        binding.tvClase.setTextColor(getResources().getColor(R.color.black))
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val valor = data?.getIntExtra("claseId", 0)
+                    for (item in listaC) {
+                        if (item.id == valor) {
+                            clase = item
+                            formViewModel.clase = item
+                            binding.tvClase.text = item.nombre
+                            binding.tvClase.setTextColor(getResources().getColor(R.color.black))
+                        }
                     }
                 }
             }
-        }
-        binding.btnClase.setOnClickListener{
+
+        binding.btnClase.setOnClickListener {
 
             val myIntent = Intent(this, ListActivity::class.java).apply {
                 putExtra(EXTRA_NAME, "clase")
             }
-          resultadoActivity.launch(myIntent)
-
+            resultadoActivity.launch(myIntent)
         }
-        var resultadoActivity2 = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            // Se recupera la información adicional.
-            val data: Intent? = result.data
+        //registro el resultado del intent lanzado por el botón del pelaje
+        var resultadoActivity2 =
+                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                    // Se recupera la información adicional.
+                    val data: Intent? = result.data
 
-            if (result.resultCode == Activity.RESULT_OK) {
-                val valor = data?.getIntExtra("pelajeId", 0)
-                for (item in listaP) {
-                    if (item.id == valor) {
-                        pelaje = item
-                        formViewModel.pelaje=item
-                        binding.tvPelo.text = item.nombre
-                        binding.tvPelo.setTextColor(getResources().getColor(R.color.black))
+                    if (result.resultCode == Activity.RESULT_OK) {
+                        val valor = data?.getIntExtra("pelajeId", 0)
+                        for (item in listaP) {
+                            if (item.id == valor) {
+                                pelaje = item
+                                formViewModel.pelaje=item
+                                binding.tvPelo.text = item.nombre
+                                binding.tvPelo.setTextColor(getResources().getColor(R.color.black))
+                            }
+                        }
                     }
                 }
-            }
-        }
+
         binding.btnPelaje.setOnClickListener {
             val myIntent = Intent(this, PelajeActivity::class.java).apply {
                 putExtra(EXTRA_NAME, "pelaje")
             }
             resultadoActivity2.launch(myIntent)
         }
-        var resultCaptura = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            val data: Intent? = result.data
 
-            if (result.resultCode == RESULT_OK) {
-                val thumbnail: Bitmap = data?.getParcelableExtra("data")!!
-                binding.imageView.setImageBitmap(thumbnail)
+        var resultTakePicture =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    enlaceFoto=Uri.fromFile(photoFile).toString()
+                    val bMap = BitmapFactory.decodeFile(enlaceFoto)
+                    if(bMap == null){
+                        Toast.makeText(
+                            this,
+                            getString(R.string.no_foto),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }else{
+                        binding.imageView.setImageBitmap(bMap)
+                        photoFile = null
+                    }
+                }
             }
-        }
 
         binding.btnImagen.setOnClickListener() {
                 // Se crea el fichero donde se guardará la imagen.
-                photoFile = myUtils.createImageFile(this)
+            //photoFile = manageFiles().createImageFile(this)
+                  photoFile = myUtils.createImageFile(this)
                 val fileProvider =
                     FileProvider.getUriForFile( // En base al provider creado en el Manifest.
                         this,
-                        "edu.andreaivanova.myfavoritespets",
+                        "edu.andreaivanova.myfavouritespets",
                         photoFile!!
                     )
 
@@ -172,27 +209,19 @@ class FormActivity : AppCompatActivity() {
                         MediaStore.EXTRA_OUTPUT, fileProvider
                     )
                 }
-                var resultTakePicture =
-                    registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-                    { result ->
-                        if (result.resultCode == Activity.RESULT_OK) {
-                            //binding.imageView.setImageResource(photoFile!!))
-                            photoFile = null
-                        }
-                    }
-                        //resultTakePicture.launch(intent)
+            resultTakePicture.launch(intent)
 
-               // val intent = Intent(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
-                if (intent.resolveActivity(packageManager) != null){
-                    resultCaptura.launch(intent)
-                }
+                //intent para cargar foto desde la cámara en el imageView
+//               val intent = Intent(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
+//                if (intent.resolveActivity(packageManager) != null){
+//                    resultCaptura.launch(intent)
+//                }
             }
 
         binding.btnGuardar.setOnClickListener() {
             var nombre = ""
             var latNombre = ""
             var rating = 0.0f
-            var image = "enlace"
             var result = true
             if (binding.tilNombre.text.isNullOrEmpty()) {
                 binding.tilName.error = getString(R.string.requerido)
@@ -209,16 +238,17 @@ class FormActivity : AppCompatActivity() {
             if (binding.tvClase.text.isNullOrBlank()){
                 binding.tvClase.text = getString(R.string.btn_clase)
                 binding.tvClase.setTextColor(getResources().getColor(R.color.red))
+                result = false
             }
             if (binding.tvPelo.text.isNullOrBlank()){
-                binding.tvPelo.text = getString(R.string.btn_clase)
+                binding.tvPelo.text = getString(R.string.btn_pelo)
                 binding.tvPelo.setTextColor(getResources().getColor(R.color.red))
+                result = false
             }
 
             if (binding.ratingBar.rating == 0.0f ) {
                 binding.tvNivelRating.text = getString(R.string.ratingError)
                 binding.tvNivelRating.setTextColor(getResources().getColor(R.color.red))
-
                 result = false
             } else {
                 rating = binding.ratingBar.rating
@@ -232,7 +262,7 @@ class FormActivity : AppCompatActivity() {
                     var valores = mutableMapOf<String,String>()
                     valores["nombre"]= nombre
                     valores["latNombre"] = latNombre
-                    valores["enlace"] = image
+                    valores["enlace"] = enlaceFoto
                     valores["id_clase"]=clase.id.toString()
                     valores["id_pelaje"]=pelaje.id.toString()
                     valores["rating"]=rating.toString()
@@ -241,7 +271,7 @@ class FormActivity : AppCompatActivity() {
                     finish()
                 }else{
                     fav=0
-                    var pet = Pet(0,nombre ,latNombre ,image, clase ,pelaje, rating, fav)
+                    var pet = Pet(0,nombre ,latNombre ,enlaceFoto, clase ,pelaje, rating, fav)
                     if(myUtils.savePet(this,pet)){
                         Toast.makeText(
                             this,
@@ -262,7 +292,6 @@ class FormActivity : AppCompatActivity() {
                         ).show()
                     }
                 }
-
             }
         }
         binding.ibAddClase.setOnClickListener {
@@ -275,24 +304,30 @@ class FormActivity : AppCompatActivity() {
                 setView(bindingCustom.root)
                 bindingCustom.tilRegistro.hint = getString(R.string.insertar_clase)
                 setPositiveButton(android.R.string.ok) { _, _ ->
-                    var name=bindingCustom.tvNuevoReg.text.toString()
-                    var lastId= 0
-                    if(listaC.size >0){
-                        lastId=listaC.last().id
+                    if(bindingCustom.tvNuevoReg.text.isNullOrBlank()){
+                        bindingCustom.tilRegistro.error = getString(R.string.requerido)
+                    }else{
+                        var name=bindingCustom.tvNuevoReg.text.toString()
+
+                        var lastId= 0
+                        if(listaC.size >0){
+                            lastId=listaC.last().id
+                        }
+
+                        clase = Clase(lastId+1,name)
+                        formViewModel.clase=clase
+                        listaC.add(clase)
+                        myUtils.saveClase(this@FormActivity,clase)
+
+                        binding.tvClase!!.text=name
+                        binding.tvClase.setTextColor(getResources().getColor(R.color.black))
+                        Toast.makeText(
+                            context,
+                            "Registro insertado: ${bindingCustom.tvNuevoReg.text}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
 
-                    clase = Clase(lastId+1,name)
-                    formViewModel.clase=clase
-                    listaC.add(clase)
-                    myUtils.saveClase(this@FormActivity,clase)
-
-                    binding.tvClase!!.text=name
-                    binding.tvClase.setTextColor(getResources().getColor(R.color.black))
-                    Toast.makeText(
-                        context,
-                        "Registro insertado: ${bindingCustom.tvNuevoReg.text}",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
                 setNegativeButton(android.R.string.cancel) { dialog, _ ->
                     Toast.makeText(
@@ -313,22 +348,26 @@ class FormActivity : AppCompatActivity() {
                 setView(bindingCustom.root)
                 bindingCustom.tilRegistro.hint = getString(R.string.insertar_pelaje)
                 setPositiveButton(android.R.string.ok) { _, _ ->
-                    var name=bindingCustom.tvNuevoReg.text.toString()
-                    var lastId=0
-                    if(listaP.size>0){
-                        lastId=listaP.last().id
+                    if(bindingCustom.tvNuevoReg.text.isNullOrBlank()){
+                        bindingCustom.tilRegistro.error = getString(R.string.requerido)
+                    }else{
+                        var name=bindingCustom.tvNuevoReg.text.toString()
+                        var lastId=0
+                        if(listaP.size>0){
+                            lastId=listaP.last().id
+                        }
+                        pelaje = Pelaje(lastId+1,name)
+                        formViewModel.pelaje = pelaje
+                        listaP.add(pelaje)
+                        myUtils.savePelaje(this@FormActivity,pelaje)
+                        binding.tvPelo!!.text=name
+                        binding.tvPelo.setTextColor(getResources().getColor(R.color.black))
+                        Toast.makeText(
+                            context,
+                            "Registro insertado: ${bindingCustom.tvNuevoReg.text}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                    pelaje = Pelaje(lastId+1,name)
-                    formViewModel.pelaje = pelaje
-                    listaP.add(pelaje)
-                    myUtils.savePelaje(this@FormActivity,pelaje)
-                    binding.tvPelo!!.text=name
-                    binding.tvPelo.setTextColor(getResources().getColor(R.color.black))
-                    Toast.makeText(
-                        context,
-                        "Registro insertado: ${bindingCustom.tvNuevoReg.text}",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
                 setNegativeButton(android.R.string.cancel) { dialog, _ ->
                     Toast.makeText(
