@@ -3,7 +3,6 @@ package edu.andreaivanova.myfavouritespets.utils
 
 import android.content.Context
 import android.os.*
-import android.util.Log
 import edu.andreaivanova.myfavouritespets.adapters.DBAdapter
 import edu.andreaivanova.myfavouritespets.model.Clase
 import edu.andreaivanova.myfavouritespets.model.Pelaje
@@ -65,23 +64,7 @@ class MyUtils {
         )
         return File.createTempFile("IMG_$timeStamp", ".jpg", directoryStorage)
     }
-    fun listFiles(context: Context): MutableList<File> {
-        val tmp: MutableList<File> = ArrayList()
 
-        val files = context.getExternalFilesDir(
-            Environment.DIRECTORY_PICTURES
-        )!!.absoluteFile.listFiles()
-
-        if (files != null) {
-            for (file in files) {
-                if (file != null) {
-                    Log.d("DIRECTORY", file.absolutePath)
-                    tmp.add(file)
-                }
-            }
-        }
-        return tmp
-    }
     fun getSimpleDialog(context:Context, title:Int, msg:Int){
         androidx.appcompat.app.AlertDialog.Builder(context).apply {
             // Se asigna un título.

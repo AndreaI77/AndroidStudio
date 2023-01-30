@@ -11,7 +11,7 @@
     <uses-permission
         android:name="android.hardware.camera"
         android:required="true" />
-
+<!--Lo siguiente no me funciona-->
 <!--    <uses-permission-->
 <!--        android:name="android.permission.CAMERA"-->
 <!--        android:required="true" />-->

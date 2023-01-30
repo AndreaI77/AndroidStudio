@@ -2,21 +2,14 @@ package edu.andreaivanova.myfavouritespets.adapters
 
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getColor
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import edu.andreaivanova.myfavouritespets.R
 import edu.andreaivanova.myfavouritespets.databinding.ItemPetBinding
 import edu.andreaivanova.myfavouritespets.model.Pet

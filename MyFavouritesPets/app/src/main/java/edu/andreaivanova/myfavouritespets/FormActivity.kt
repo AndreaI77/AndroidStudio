@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,11 +12,12 @@ import android.os.Vibrator
 import android.os.VibratorManager
 import android.provider.MediaStore
 import android.util.Log
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
 import edu.andreaivanova.myfavouritespets.databinding.ActivityFormBinding
 import edu.andreaivanova.myfavouritespets.databinding.DialogLayoutBinding
 import edu.andreaivanova.myfavouritespets.model.Clase
@@ -66,6 +66,10 @@ class FormActivity : AppCompatActivity() {
         binding = ActivityFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //escondo el teclado al hacer click fuera del edit text
+        binding.root.setOnClickListener(){
+            hideKeyboard()
+        }
 
         //compruebo la versión, ya que a partir de la api 31 se usa vibratorManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -135,6 +139,12 @@ class FormActivity : AppCompatActivity() {
                 }
             }
         }
+        val view = this.currentFocus
+        if (view != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
         // creo un Dialog  para obtener clase
         binding.btnClase.setOnClickListener {
@@ -533,5 +543,12 @@ class FormActivity : AppCompatActivity() {
             }.show()
         }
     }
-
+    fun AppCompatActivity.hideKeyboard() {
+        val view = this.currentFocus
+        if (view != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+    }
 }
