@@ -39,5 +39,6 @@
     <string name = "no_foto">Archivo no encontrado</string>
     <string name = "cls">Clase:</string>
     <string name = "pelo">Pelaje:</string>
+    <string name = "modificar">Se ha actualizado %s</string>
 
 </resources>

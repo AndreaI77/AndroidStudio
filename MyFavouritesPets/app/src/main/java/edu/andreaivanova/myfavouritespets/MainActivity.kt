@@ -152,11 +152,9 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
                 true
             }
             R.id.mi_todos ->{
-                // obtengo todos los datos y recargo el recycler
-
-               lista= myUtils.getPets(this)
-                myRecycler.invalidate()
-               myAdapter.notifyDataSetChanged()
+                //recargo la activity
+                val myIntent = Intent(this, MainActivity::class.java)
+                startActivity(myIntent)
                 true
             }
             else -> super.onOptionsItemSelected(item)

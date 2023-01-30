@@ -2,17 +2,22 @@ package edu.andreaivanova.myfavouritespets
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import edu.andreaivanova.myfavouritespets.databinding.ActivityFormBinding
 import edu.andreaivanova.myfavouritespets.databinding.DialogLayoutBinding
 import edu.andreaivanova.myfavouritespets.model.Clase
@@ -37,6 +42,7 @@ class FormActivity : AppCompatActivity() {
     private var id: String? = null
     private var enlaceFoto = ""
     private var selectedPosition = -1
+    private lateinit var vibrator: Vibrator
 
 
     companion object {
@@ -60,6 +66,16 @@ class FormActivity : AppCompatActivity() {
         binding = ActivityFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        //compruebo la versión, ya que a partir de la api 31 se usa vibratorManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val vibratorManager =
+                this.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+            vibrator = vibratorManager.defaultVibrator
+        } else {
+
+            vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        }
         //relleno los datos desde viewModel
         formViewModel = ViewModelProvider(this).get(FormViewModel::class.java)
         binding.tilNombre.setText(formViewModel.nombre)
@@ -279,10 +295,13 @@ class FormActivity : AppCompatActivity() {
             { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     //obtengo el enlace, lo guardo en una variable y actualizo el viewModel
-                    enlaceFoto=Uri.fromFile(photoFile).toString()
+                    // las 2 formas son válidas
+                    //enlaceFoto= photoFile?.absolutePath.toString()
+                    enlaceFoto = photoFile.toString()
                     formViewModel.imagen=enlaceFoto
                     //obtengo el código de la imagen y si está vacío, aviso con un toast
                     val bMap = BitmapFactory.decodeFile(enlaceFoto)
+                    Log.d("RUTA", enlaceFoto)
                     if(bMap == null){
                         Toast.makeText(
                             this,
@@ -375,6 +394,16 @@ class FormActivity : AppCompatActivity() {
                     valores["rating"]=rating.toString()
                     valores["favorite"]=fav.toString()
                     myUtils.updatePet(this,id!!.toInt(), valores)
+                    myUtils.vibrate(this, vibrator)
+                    //Log.d("ruta", enlaceFoto)
+
+                    // ya que al modificar vuelvo a la pantalla anterior,
+                    // el toast lo lanzo en el contexto de la aplicación. Viene con el logo incorporado
+                    Toast.makeText(
+                        applicationContext,
+                        getString(R.string.modificar,nombre),
+                        Toast.LENGTH_SHORT
+                    ).show()
 
                     //vuelvo a la pantalla principal
                     val myIntent = Intent(this, MainActivity::class.java)

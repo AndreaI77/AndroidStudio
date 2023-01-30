@@ -1,6 +1,7 @@
 package edu.andreaivanova.myfavouritespets.adapters
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.util.Log
@@ -87,9 +88,11 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
 
             enlace.text = binding.root.resources.getString(R.string.enlace,pet.latName.replace(' ','_',true))
             stars.rating=pet.rating
-           // imagen.setImageResource()
+            if(pet.image != "" && pet.image != null){
+                imagen.setImageBitmap(BitmapFactory.decodeFile(pet.image))
+            }
+
             if(pet.favorite == 0){
-               // fav.imageTintMode= binding.root.resources.getColor(R.color.red)
                 fav.setColorFilter(binding.root.resources.getColor(R.color.grey))
             }else{
                 fav.setColorFilter(binding.root.resources.getColor(R.color.red))

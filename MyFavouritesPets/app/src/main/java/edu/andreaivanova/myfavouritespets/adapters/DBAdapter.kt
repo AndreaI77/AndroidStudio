@@ -203,6 +203,7 @@ class DBAdapter(context: Context, factory: SQLiteDatabase.CursorFactory?):
         db.close()
         return pelo
     }
+
     //método que inserta clase
     fun addPelaje(pelaje:Pelaje){
         val data = ContentValues()
