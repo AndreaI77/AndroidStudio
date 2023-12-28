@@ -12,12 +12,12 @@
         android:name="android.hardware.camera"
         android:required="true" />
 <!--Lo siguiente no me funciona-->
-<!--    <uses-permission-->
-<!--        android:name="android.permission.CAMERA"-->
-<!--        android:required="true" />-->
-<!--    <uses-feature-->
-<!--        android:name="android.hardware.camera"-->
-<!--        android:required="true" />-->
+<!--    <uses-permission
+        android:name="android.permission.CAMERA"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />-->
     <queries>
         <intent>
             <action android:name="android.intent.action.VIEW" />

@@ -10,6 +10,8 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import edu.andreaivanova.myfavouritespets.FormActivity
+import edu.andreaivanova.myfavouritespets.MainActivity
 import edu.andreaivanova.myfavouritespets.R
 import edu.andreaivanova.myfavouritespets.databinding.ItemPetBinding
 import edu.andreaivanova.myfavouritespets.model.Pet
@@ -115,7 +117,6 @@ class RVAdapter (lista:MutableList<Pet>): RecyclerView.Adapter<RVAdapter.ViewHol
             //añado un listener a cada elemento
             itemView.setOnClickListener{
                 mClickListener.onItemClick(it, adapterPosition)
-
 //                Snackbar.make( itemView, binding.root.resources.getString(R.string.clase, pet.id, pet.nombre),
 //                    Snackbar.LENGTH_LONG).show()
             }

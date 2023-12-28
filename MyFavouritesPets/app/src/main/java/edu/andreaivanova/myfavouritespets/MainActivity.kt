@@ -136,7 +136,8 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
             R.id.mi_ordenar-> {
                 //ordeno por nombre y recargo el recycler
               lista.sortBy { it.nombre.toLowerCase().first() }
-                myAdapter.notifyDataSetChanged()
+                setUpRecyclerView()
+                //myAdapter.notifyDataSetChanged()
                 true
             }
             R.id.mi_amor->{
@@ -152,9 +153,11 @@ class MainActivity : AppCompatActivity(),RVAdapter.ItemLongClickListener, RVAdap
                 true
             }
             R.id.mi_todos ->{
+                lista=myUtils.getPets(this)
+                setUpRecyclerView()
                 //recargo la activity
-                val myIntent = Intent(this, MainActivity::class.java)
-                startActivity(myIntent)
+//                val myIntent = Intent(this, MainActivity::class.java)
+//                startActivity(myIntent)
                 true
             }
             else -> super.onOptionsItemSelected(item)

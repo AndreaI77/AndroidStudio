@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,8 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import edu.andreaivanova.myfavouritespets.databinding.ActivityFormBinding
@@ -43,7 +46,7 @@ class FormActivity : AppCompatActivity() {
     private var enlaceFoto = ""
     private var selectedPosition = -1
     private lateinit var vibrator: Vibrator
-
+    private val MY_PERMISSIONS_REQUEST_CAMERA =321
 
     companion object {
         const val TAG_APP = "MyFavouritesPets"
@@ -139,6 +142,7 @@ class FormActivity : AppCompatActivity() {
                 }
             }
         }
+        //con esto quito el teclado al hacer clickc sobre el layout
         val view = this.currentFocus
         if (view != null) {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -327,8 +331,39 @@ class FormActivity : AppCompatActivity() {
             }
 
         binding.btnImagen.setOnClickListener() {
+//            if(ContextCompat.checkSelfPermission(
+//                    this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//                Log.d("DEBUG", "No está concedido el permiso de camera")
+//                if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)){
+//                    Log.d("DEBUG", "Se da una explicación")
+//                    AlertDialog.Builder(this)
+//                    .setTitle("Permiso para llamar")
+//                    .setMessage("Puede resultar interesante indicar porqué.")
+//                    // Las variables dialog y which en este caso no se utilizan
+//                    // se podrían sustituir por _ cada una ({_, _ -> ...).
+//                    .setPositiveButton(android.R.string.ok) { dialog, which ->
+//                        Log.d("DEBUG", "Se acepta y se vuelve a pedir permiso")
+//                        ActivityCompat.requestPermissions(
+//                            this, arrayOf(Manifest.permission.CAMERA),
+//                        MY_PERMISSIONS_REQUEST_CAMERA
+//                                 )
+//                         }
+//                    .setNeutralButton(android.R.string.cancel) { dialog, _ ->
+//                        dialog.cancel()
+//                         }
+//                    .show()
+//                }else{
+//                    ActivityCompat.requestPermissions(
+//                         this, arrayOf(Manifest.permission.CAMERA),
+//                         MY_PERMISSIONS_REQUEST_CAMERA
+//                    )
+//                }
+//            }else{
+//                //aquí hay que poner el intent
+//            }
+
                 // Se crea el fichero donde se guardará la imagen.
-                  photoFile = myUtils.createImageFile(this)
+                photoFile = myUtils.createImageFile(this)
                 val fileProvider =
                     FileProvider.getUriForFile( // En base al provider creado en el Manifest.
                         this,
@@ -342,8 +377,8 @@ class FormActivity : AppCompatActivity() {
                     )
                 }
 
-            //lanzo el intent
-            resultTakePicture.launch(intent)
+                //lanzo el intent
+                resultTakePicture.launch(intent)
 
                 //intent para cargar foto desde la cámara en el imageView
 //               val intent = Intent(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
@@ -436,12 +471,14 @@ class FormActivity : AppCompatActivity() {
                         binding.ratingBar.rating = 0.0f
                         binding.imageView.setImageBitmap(null)
                         enlaceFoto=""
+
                     }else{
                         Toast.makeText(
                             this,
                             getString(R.string.no_insert),
                             Toast.LENGTH_SHORT
                         ).show()
+
                     }
                 }
             }
